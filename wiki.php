@@ -3,15 +3,15 @@
 Plugin Name: PS Wiki
 Plugin URI: https://cp-psource.github.io/wiki/
 Description: Ein simples aber mächtiges Wiki-Plugin für Deine ClassicPress Seite, inkl. Multisitesupport, Frontend-Editor, Rechtemanagment.
-Author: DerN3rd (PSOURCE)
-Version: 1.3.8
-Author URI: https://github.com/cp-psource
+Author: PSOURCE
+Version: 1.0.0
+Author URI: https://github.com/Power-Source
 Text Domain: ps-wiki
 */
 
 /*
-Copyright 2019-2024 PSOURCE (https://github.com/cp-psource)
-Author - Der N3rd
+Copyright 2019-2026 PSOURCE (https://github.com/Power-Source)
+Author - PSOURCE
 This program is free software; you can redistribute it and/or modify
 it under the terms of the GNU General Public License (Version 2 - GPLv2) as published by
 the Free Software Foundation.
@@ -27,7 +27,7 @@ Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 class Wiki {
 
 	// @var string Aktuelle Version
-	var $version = '1.3.8';
+	var $version = '1.0.0';
 
 	// @var string Der DB Prefix
 	var $db_prefix = '';
@@ -104,6 +104,12 @@ class Wiki {
 		add_filter('request', array(&$this, 'request'));
 		add_filter('body_class', array(&$this, 'body_class'), 10);
 		add_action('wp_enqueue_scripts', array( &$this, 'wp_enqueue_scripts'), 10);
+		// Mobile Tabs-Dropdown für kleine Bildschirme einbinden
+		add_action('wp_enqueue_scripts', function() {
+			if (is_singular('psource_wiki') || is_tax('psource_wiki_category')) {
+				wp_enqueue_script('psource-wiki-tabs-mobile', plugins_url('js/wiki-tabs-mobile.js', __FILE__), array(), '1.0', true);
+			}
+		});
 	}
 
 	/**

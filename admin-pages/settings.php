@@ -38,15 +38,26 @@ class Wiki_Admin_Page_Settings {
 					<th><label for="psource_wiki-slug"><?php _e('Wiki Slug', 'ps-wiki'); ?></label> </th>
 					<td> /<input type="text" size="20" id="psource_wiki-slug" name="wiki[slug]" value="<?php echo $wiki->get_setting('slug'); ?>" /></td>
 				</tr>
-				<tr valign="top">
-					<th><label for="psource_wiki-display_mode"><?php _e('Darstellung', 'ps-wiki'); ?></label></th>
-					<td>
-						<select id="psource_wiki-display_mode" name="wiki[display_mode]">
-							<option value="list" <?php selected($wiki->get_setting('display_mode'), 'list'); ?>><?php _e('Liste', 'ps-wiki'); ?></option>
-							<option value="grid" <?php selected($wiki->get_setting('display_mode'), 'grid'); ?>><?php _e('Grid', 'ps-wiki'); ?></option>
-						</select>
-					</td>
-				</tr>
+				   <tr valign="top">
+					   <th><label for="psource_wiki-display_mode"><?php _e('Darstellung', 'ps-wiki'); ?></label></th>
+					   <td>
+						   <select id="psource_wiki-display_mode" name="wiki[display_mode]">
+							   <option value="list" <?php selected($wiki->get_setting('display_mode'), 'list'); ?>><?php _e('Liste', 'ps-wiki'); ?></option>
+							   <option value="grid" <?php selected($wiki->get_setting('display_mode'), 'grid'); ?>><?php _e('Grid', 'ps-wiki'); ?></option>
+						   </select>
+					   </td>
+				   </tr>
+				   <tr valign="top">
+					   <th><label for="psource_wiki-excerpt_type"><?php _e('Auszugslänge', 'ps-wiki'); ?></label></th>
+					   <td>
+						   <input type="number" min="5" max="500" id="psource_wiki-excerpt_length" name="wiki[excerpt_length]" value="<?php echo esc_attr($wiki->get_setting('excerpt_length', 30)); ?>" style="width:60px;" />
+						   <select id="psource_wiki-excerpt_type" name="wiki[excerpt_type]">
+							   <option value="words" <?php selected($wiki->get_setting('excerpt_type', 'words'), 'words'); ?>><?php _e('Wörter', 'ps-wiki'); ?></option>
+							   <option value="chars" <?php selected($wiki->get_setting('excerpt_type', 'words'), 'chars'); ?>><?php _e('Zeichen', 'ps-wiki'); ?></option>
+						   </select>
+						   <span class="description"><?php _e('Wie lang sollen die Auszüge in Listen und Grid sein?', 'ps-wiki'); ?></span>
+					   </td>
+				   </tr>
 				<?php
 				if ( class_exists('Wiki_Premium') ) {
 					Wiki_Premium::get_instance()->admin_page_settings();
@@ -86,8 +97,11 @@ class Wiki_Admin_Page_Settings {
 
 					$wiki->settings['slug'] = $new_slug;
 					// Darstellung speichern
-					$wiki->settings['display_mode'] = isset($_POST['wiki']['display_mode']) && in_array($_POST['wiki']['display_mode'], array('list','grid')) ? $_POST['wiki']['display_mode'] : 'list';
-					$wiki->settings = apply_filters('wiki_save_settings', $wiki->settings, $_POST['wiki']);
+
+						$wiki->settings['display_mode'] = isset($_POST['wiki']['display_mode']) && in_array($_POST['wiki']['display_mode'], array('list','grid')) ? $_POST['wiki']['display_mode'] : 'list';
+						$wiki->settings['excerpt_length'] = isset($_POST['wiki']['excerpt_length']) ? max(5, intval($_POST['wiki']['excerpt_length'])) : 30;
+						$wiki->settings['excerpt_type'] = isset($_POST['wiki']['excerpt_type']) && in_array($_POST['wiki']['excerpt_type'], array('words','chars')) ? $_POST['wiki']['excerpt_type'] : 'words';
+						$wiki->settings = apply_filters('wiki_save_settings', $wiki->settings, $_POST['wiki']);
 
 			update_option('wiki_settings', $wiki->settings);
 

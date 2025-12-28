@@ -74,15 +74,6 @@ get_header( 'wiki' );
 <?php get_footer('wiki'); ?>
 
 <style type="text/css">
-.single #primary {
-	float: left;
-	margin: 0 -26.4% 0 0;
-}
-
-.singular #content, .left-sidebar.singular #content {
-	margin: 0 34% 0 7.6%;
-    width: 58.4%;
-}
 .psource-wiki-list {
     margin: 1em 0 2em 0;
     padding: 0;

@@ -3,7 +3,7 @@ Contributors: DerN3rd (PSOURCE)
 Tags: multisite, wiki, wikipedia
 Requires at least: 4.9
 Tested up to: 5.6
-Stable tag: 1.3.8
+Stable tag: 1.0.0
 Requires PHP: 7.0
 License: GPLv2 or later
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
@@ -62,40 +62,7 @@ Use the opportunity to do so on GitHub or send your files to: webmaster@n3rds.wo
 
 == ChangeLog ==
 
-= 1.3.8 =
+= 1.0.0 =
 
-* Fix: comments
-* Fix: History
+* Release
 
-= 1.3.7 =
-
-* Fix: Uncaught Error: Call to undefined method
-
-
-= 1.3.8 =
-
-* Textanpassung
-* PhP8 Fix
-
-= 1.3.5 =
-
-* CSS für Revisionen verbessert (auch Responsive)
-* Style des Frontend-Editors verbessert
-* Psource Updater aktualisiert
-* Getestet für PhP8
-* Pot hinzugefügt#
-* Übersetzungen
-* Register post_type Fix
-* Code-Optimierung
-
-= 1.3.4 =
-
-* Jede Menge Code überholt
-* Komplett in Deutsch
-* Texte angepasst
-* Code-Entschlackt
-
-= 1.3.3 =
-
-* Overhauled von WPMUDEV
-* Release PSOURCE Netzwerksuche

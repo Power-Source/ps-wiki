@@ -1,3 +1,32 @@
+@media (max-width: 600px) {
+	.psource_wiki_tabs ul {
+		display: flex !important;
+		flex-wrap: nowrap !important;
+		overflow-x: auto !important;
+		-webkit-overflow-scrolling: touch;
+		width: 100%;
+		padding-bottom: 4px;
+		scrollbar-width: thin;
+	}
+	.psource_wiki_tabs li {
+		min-width: 120px;
+		flex: 0 0 auto;
+		font-size: 1em !important;
+		margin: 0 4px !important;
+	}
+	.psource_wiki_tabs ul.left,
+	.psource_wiki_tabs ul.right {
+		float: none !important;
+		display: flex !important;
+		flex-wrap: nowrap !important;
+		width: auto !important;
+		justify-content: flex-start;
+		margin-bottom: 0;
+	}
+	.psource_wiki_tabs {
+		display: block;
+	}
+}
 .widget_psource_wiki a.current {
 	color: #000;
 	font-weight: bold;
