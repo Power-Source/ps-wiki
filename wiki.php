@@ -605,7 +605,21 @@ class Wiki {
 				$new_content .= '<div class="psource_wiki_message">' . __('Revision erfolgreich wiederhergestellt', 'ps-wiki') . ' <a class="dismiss" href="#">x</a></div>';
 			}
 			$new_content .= '<div class="psource_wiki_tabs psource_wiki_tabs_top">' . $this->tabs() . '<div class="psource_wiki_clear"></div></div>';
-			$new_content .= $this->decider($content, $action, $revision_id, $left, $right);
+			// Autolink nur wenn Option aktiv
+			$wiki_autolink = isset($this->settings['autolink_enabled']) ? $this->settings['autolink_enabled'] : 1;
+			$wiki_content = $content;
+			if ($wiki_autolink) {
+				$wiki_content = ps_wiki_autolink_titles($wiki_content);
+			}
+			// Inhaltsverzeichnis automatisch einfügen, falls Option aktiv
+			$wiki_toc_auto = isset($this->settings['toc_auto']) ? $this->settings['toc_auto'] : 0;
+			if ($wiki_toc_auto) {
+				if (function_exists('ps_wiki_generate_toc')) {
+					$toc_data = ps_wiki_generate_toc($wiki_content);
+					$wiki_content = $toc_data['toc'] . $toc_data['content'];
+				}
+			}
+			$new_content .= $this->decider($wiki_content, $action, $revision_id, $left, $right);
 		} else {
 			$new_content .= $this->get_edit_form(false);
 		}
@@ -1566,7 +1580,9 @@ class Wiki {
 			'wiki_name' => __('Wikis', 'ps-wiki'),
 			'sub_wiki_name' => __('Sub-Wikis', 'ps-wiki'),
 			'sub_wiki_order_by' => 'menu_order',
-			'sub_wiki_order' => 'ASC'
+			'sub_wiki_order' => 'ASC',
+			'autolink_enabled' => 1,
+			'toc_auto' => 0
 		);
 
 		// Migriert und löscht den Namen der alten Einstellungsoption, was nicht sehr intuitiv ist
@@ -1988,6 +2004,8 @@ $wiki = Wiki::get_instance();
 if ( file_exists($wiki->plugin_dir . 'premium/wiki-premium.php') ) {
 	require_once $wiki->plugin_dir . 'premium/wiki-premium.php';
 }
+
+require_once dirname(__FILE__) . '/lib/functions-wiki-autolink.php';
 
 // Archiv-Titel für Wiki-Kategorien anpassen
 add_filter('get_the_archive_title', function($title) {

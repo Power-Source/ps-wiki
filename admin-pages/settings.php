@@ -35,6 +35,19 @@ class Wiki_Admin_Page_Settings {
 
 			<table class="form-table">
 				<tr valign="top">
+					<th scope="row"><label for="psource_wiki-toc_auto"><?php _e('Inhaltsverzeichnis automatisch einfügen', 'ps-wiki'); ?></label></th>
+					<td>
+						<input type="checkbox" id="psource_wiki-toc_auto" name="wiki[toc_auto]" value="1" <?php checked($wiki->get_setting('toc_auto', 0), 1); ?> />
+						<span class="description"><?php _e('Fügt am Anfang jeder Wiki-Seite automatisch ein Inhaltsverzeichnis (H2/H3) ein. Alternativ kannst du den Shortcode [ps_wiki_toc] an beliebiger Stelle nutzen.', 'ps-wiki'); ?></span>
+					</td>
+				</tr>
+					<th scope="row"><label for="psource_wiki-autolink_enabled"><?php _e('Automatische Wiki-Verlinkung', 'ps-wiki'); ?></label></th>
+					<td>
+						<input type="checkbox" id="psource_wiki-autolink_enabled" name="wiki[autolink_enabled]" value="1" <?php checked($wiki->get_setting('autolink_enabled', 1), 1); ?> />
+						<span class="description"><?php _e('Verwende [[Seitentitel]] im Text, um automatisch auf andere Wiki-Seiten zu verlinken. Beispiel: [[Wiki 1]] verlinkt auf die Seite "Wiki 1".', 'ps-wiki'); ?></span>
+					</td>
+				</tr>
+				<tr valign="top">
 					<th><label for="psource_wiki-slug"><?php _e('Wiki Slug', 'ps-wiki'); ?></label> </th>
 					<td> /<input type="text" size="20" id="psource_wiki-slug" name="wiki[slug]" value="<?php echo $wiki->get_setting('slug'); ?>" /></td>
 				</tr>
@@ -101,6 +114,8 @@ class Wiki_Admin_Page_Settings {
 						$wiki->settings['display_mode'] = isset($_POST['wiki']['display_mode']) && in_array($_POST['wiki']['display_mode'], array('list','grid')) ? $_POST['wiki']['display_mode'] : 'list';
 						$wiki->settings['excerpt_length'] = isset($_POST['wiki']['excerpt_length']) ? max(5, intval($_POST['wiki']['excerpt_length'])) : 30;
 						$wiki->settings['excerpt_type'] = isset($_POST['wiki']['excerpt_type']) && in_array($_POST['wiki']['excerpt_type'], array('words','chars')) ? $_POST['wiki']['excerpt_type'] : 'words';
+						$wiki->settings['autolink_enabled'] = isset($_POST['wiki']['autolink_enabled']) ? 1 : 0;
+						$wiki->settings['toc_auto'] = isset($_POST['wiki']['toc_auto']) ? 1 : 0;
 						$wiki->settings = apply_filters('wiki_save_settings', $wiki->settings, $_POST['wiki']);
 
 			update_option('wiki_settings', $wiki->settings);

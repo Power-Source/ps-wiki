@@ -377,6 +377,7 @@ class Wiki_Premium {
 		add_action('wp_insert_post', array(&$this, 'save_wiki_meta'), 10, 2);
 		add_action('widgets_init', array(&$this, 'widgets_init'));
 	}
+
 }
 
 Wiki_Premium::get_instance();
