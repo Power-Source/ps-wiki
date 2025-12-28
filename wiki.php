@@ -24,28 +24,22 @@ along with this program; if not, write to the Free Software
 Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 */
 
+
+require_once dirname(__FILE__) . '/lib/classes/WikiNotifications.php';
+
 class Wiki {
-
-	// @var string Aktuelle Version
-	var $version = '1.0.0';
-
-	// @var string Der DB Prefix
-	var $db_prefix = '';
-
-	// @var string Die Plugin Einstellungen
-	var $settings = array();
-
-	// @var string Der für Wiki-Tags zu verwendende Slug
-	var $slug_tags = 'tags';
-
-	// @var string Der für Wiki-Kategorien zu verwendende Slug
-	var $slug_categories = 'categories';
-
-	// @var string Das Verzeichnis, in dem sich dieses Plugin befindet
-	var $plugin_dir = '';
-
-	// @var string Die Basis-URL des Plugins
-	var $plugin_url = '';
+    // ...existing code...
+    var $version = '1.0.0';
+    var $db_prefix = '';
+    var $settings = array();
+    var $slug_tags = 'tags';
+    var $slug_categories = 'categories';
+    var $plugin_dir = '';
+    var $plugin_url = '';
+    /**
+     * Instanz der Benachrichtigungs-Klasse
+     */
+    var $notifications = null;
 
 	/**
 	 * Bezieht sich auf unsere einzelne Instanz der Klasse
@@ -77,40 +71,41 @@ class Wiki {
 	 * @access private
 	 */
 
-	private function __construct() {
-		$this->init_vars();
-		add_action('init', array(&$this, 'init'));
-		add_action('init', array(&$this, 'maybe_flush_rewrites'), 999);
-		//add_action('current_screen', function(){ echo get_current_screen()->id; });
-		add_action('wpmu_new_blog', array(&$this, 'new_blog'), 10, 6);
-		add_action('admin_print_styles-settings_page_wiki', array(&$this, 'admin_styles'));
-		add_action('admin_print_scripts-settings_page_wiki', array(&$this, 'admin_scripts'));
-		add_action('add_meta_boxes_psource_wiki', array(&$this, 'meta_boxes') );
-		add_action('wp_insert_post', array(&$this, 'save_wiki_meta'), 10, 2 );
-		add_action('widgets_init', array(&$this, 'widgets_init'));
-		add_action('pre_post_update', array(&$this, 'send_notifications'), 50, 1);
-		add_filter('the_content', array(&$this, 'theme'), 999);	//auf wirklich niedrige Priorität gesetzt. Wir möchten, dass dies nach allen anderen Filtern ausgeführt wird, da es sonst zu unerwünschten Ausgaben kommen kann.
-		add_action('template_include', array(&$this, 'load_templates') );
-		add_filter('name_save_pre', array(&$this, 'name_save'));
-		add_filter('role_has_cap', array(&$this, 'role_has_cap'), 10, 3);
-		add_filter('user_has_cap', array(&$this, 'user_has_cap'), 10, 3);
-		add_filter('get_edit_post_link', array(&$this, 'get_edit_post_link'));
-		add_filter('comments_open', array(&$this, 'comments_open'), 10, 1);
-		add_filter('user_can_richedit', array(&$this, 'user_can_richedit'));
-		add_filter('wp_title', array(&$this, 'wp_title'), 10, 3);
-		add_filter('the_title', array(&$this, 'the_title'), 10, 2);
-		add_filter('404_template', array(&$this, 'not_found_template'));
-		add_action('pre_get_posts', array( &$this, 'pre_get_posts'));
-		add_filter('request', array(&$this, 'request'));
-		add_filter('body_class', array(&$this, 'body_class'), 10);
-		add_action('wp_enqueue_scripts', array( &$this, 'wp_enqueue_scripts'), 10);
-		// Mobile Tabs-Dropdown für kleine Bildschirme einbinden
-		add_action('wp_enqueue_scripts', function() {
-			if (is_singular('psource_wiki') || is_tax('psource_wiki_category')) {
-				wp_enqueue_script('psource-wiki-tabs-mobile', plugins_url('js/wiki-tabs-mobile.js', __FILE__), array(), '1.0', true);
-			}
-		});
-	}
+	   private function __construct() {
+		   $this->init_vars();
+		   $this->notifications = new WikiNotifications($this);
+		   add_action('init', array(&$this, 'init'));
+		   add_action('init', array(&$this, 'maybe_flush_rewrites'), 999);
+		   //add_action('current_screen', function(){ echo get_current_screen()->id; });
+		   add_action('wpmu_new_blog', array(&$this, 'new_blog'), 10, 6);
+		   add_action('admin_print_styles-settings_page_wiki', array(&$this, 'admin_styles'));
+		   add_action('admin_print_scripts-settings_page_wiki', array(&$this, 'admin_scripts'));
+		   add_action('add_meta_boxes_psource_wiki', array(&$this, 'meta_boxes') );
+		   add_action('wp_insert_post', array(&$this, 'save_wiki_meta'), 10, 2 );
+		   add_action('widgets_init', array(&$this, 'widgets_init'));
+		   add_action('pre_post_update', array($this->notifications, 'send_notifications'), 50, 1);
+		   add_filter('the_content', array(&$this, 'theme'), 999);  //auf wirklich niedrige Priorität gesetzt. Wir möchten, dass dies nach allen anderen Filtern ausgeführt wird, da es sonst zu unerwünschten Ausgaben kommen kann.
+		   add_action('template_include', array(&$this, 'load_templates') );
+		   add_filter('name_save_pre', array(&$this, 'name_save'));
+		   add_filter('role_has_cap', array(&$this, 'role_has_cap'), 10, 3);
+		   add_filter('user_has_cap', array(&$this, 'user_has_cap'), 10, 3);
+		   add_filter('get_edit_post_link', array(&$this, 'get_edit_post_link'));
+		   add_filter('comments_open', array(&$this, 'comments_open'), 10, 1);
+		   add_filter('user_can_richedit', array(&$this, 'user_can_richedit'));
+		   add_filter('wp_title', array(&$this, 'wp_title'), 10, 3);
+		   add_filter('the_title', array(&$this, 'the_title'), 10, 2);
+		   add_filter('404_template', array(&$this, 'not_found_template'));
+		   add_action('pre_get_posts', array( &$this, 'pre_get_posts'));
+		   add_filter('request', array(&$this, 'request'));
+		   add_filter('body_class', array(&$this, 'body_class'), 10);
+		   add_action('wp_enqueue_scripts', array( &$this, 'wp_enqueue_scripts'), 10);
+		   // Mobile Tabs-Dropdown für kleine Bildschirme einbinden
+		   add_action('wp_enqueue_scripts', function() {
+			   if (is_singular('psource_wiki') || is_tax('psource_wiki_category')) {
+				   wp_enqueue_script('psource-wiki-tabs-mobile', plugins_url('js/wiki-tabs-mobile.js', __FILE__), array(), '1.0', true);
+			   }
+		   });
+	   }
 
 	/**
 	 * Wird beim Hinzufügen eines neuen Blogs in Multisite ausgeführt
@@ -1772,16 +1767,10 @@ class Wiki {
 		));
 	}
 
-	function is_subscribed() {
-		global $wpdb, $current_user, $post, $blog_id;
-
-		if ( is_user_logged_in() )
-			return $wpdb->get_var("SELECT COUNT(ID) FROM {$this->db_prefix}wiki_subscriptions WHERE blog_id = {$blog_id} AND wiki_id = {$post->ID} AND user_id = {$current_user->ID}");
-
-		if ( isset($_COOKIE['psource_wiki_email']) )
-			return (bool) $wpdb->get_var("SELECT COUNT(ID) FROM {$this->db_prefix}wiki_subscriptions WHERE blog_id = {$blog_id} AND wiki_id = {$post->ID} AND email = '{$_COOKIE['psource_wiki_email']}'");
-		return false;
-	}
+	   // Benachrichtigungs-Logik ausgelagert nach WikiNotifications
+	   function is_subscribed() {
+		   return $this->notifications->is_subscribed();
+	   }
 
 	function meta_boxes() {
 		global $post, $current_user;
@@ -1830,24 +1819,10 @@ class Wiki {
     	return $post_name;
 	}
 
-	function notifications_meta_box( $post, $echo = true ) {
-		$settings = get_option('psource_wiki_settings');
-		$email_notify = get_post_meta($post->ID, 'psource_wiki_email_notification', true);
-
-		if ( false === $email_notify )
-			$email_notify = 'enabled';
-			$content	= '';
-			$content .= '<input type="hidden" name="psource_wiki_notifications_meta" value="1" />';
-			$content .= '<div class="alignleft">';
-			$content .= '<label><input type="checkbox" name="psource_wiki_email_notification" value="enabled" ' . checked('enabled', $email_notify, false) .' /> '.__('Aktiviere E-Mail-Benachrichtigungen', 'ps-wiki').'</label>';
-			$content .= '</div>';
-			$content .= '<div class="clear"></div>';
-
-		if ($echo) {
-			echo $content;
-		}
-		return $content;
-	}
+	   // Benachrichtigungs-Logik ausgelagert nach WikiNotifications
+	   function notifications_meta_box($post, $echo = true) {
+		   return $this->notifications->notifications_meta_box($post, $echo);
+	   }
 
 	function save_wiki_meta($post_id, $post = null) {
 		//Schnellbearbeitung überspringen
@@ -1868,135 +1843,7 @@ class Wiki {
 		register_widget('WikiWidget');
 	}
 
-	function send_notifications($post_id) {
-		global $wpdb;
 
-		// Wir speichern manuell mit wp_publish_posts_autosave()
-		if ( defined( 'DOING_AUTOSAVE' ) && DOING_AUTOSAVE )
-			return;
-
-		if ( !$post = get_post( $post_id, ARRAY_A ) )
-			return;
-
-		if ( $post['post_type'] != 'psource_wiki' || !post_type_supports($post['post_type'], 'revisions') )
-			return;
-
-		// alle Revisionen und (möglicherweise) eine automatische Speicherung
-		$revisions = wp_get_post_revisions($post_id, array( 'order' => 'ASC' ));
-		$revision = array_pop($revisions);
-		$post = get_post($post_id);
-		$cancel_url = get_option('siteurl') . '?action=cancel-wiki-subscription&sid=';
-		$admin_email = get_option('admin_email');
-		$post_title = $post->post_title;
-		$post_content = $post->post_content;
-		$post_url = get_permalink($post_id);
-		$revisions = wp_get_post_revisions($post->ID);
-		$revision = array_shift($revisions);
-
-		if ($revision) {
-			$revert_url = wp_nonce_url(add_query_arg(array('revision' => $revision->ID), admin_url('revision.php')), "restore-post_$post->ID|$revision->ID" );
-		} else {
-			$revert_url = "";
-		}
-
-		//Bereinige Titel
-		$blog_name = get_option('blogname');
-		$post_title = strip_tags($post_title);
-		//Bereinige Inhalt
-		$post_content = strip_tags($post_content);
-		//Auszug bekommen
-		$post_excerpt = $post_content;
-
-		if (strlen($post_excerpt) > 255) {
-			$post_excerpt = substr($post_excerpt,0,252) . 'Weiterlesen...';
-		}
-
-	//Email-Nachrichten 
-	$wiki_notification_content = array();
-	$wiki_notification_content['user'] = sprintf(__("Sehr geehrter Abonnent,
-
-%s wurde geändert
-
-Du kannst die Wiki-Seite hier vollständig lesen: %s
-
-%s
-
-Danke,
-BLOGNAME
-
-Abonnement kündigen: CANCEL_URL", 'POST TITLE', 'ps-wiki'), 'POST_URL', 'EXCERPT', 'BLOGNAME');
-
-	if ($revision) {
-	$wiki_notification_content['author'] = sprintf(__("Lieber Autor,
-
-%s wurde verändert
-
-Du kannst die Wiki-Seite hier vollständig lesen: %s
-
-Du kannst die Änderungen rückgängig machen: %s
-
-%s
-
-Danke,
-%s
-
-Abonnement kündigen: %s", 'ps-wiki'), 'POST_TITLE', 'POST_URL', 'REVERT_URL', 'EXCERPT', 'BLOGNAME', 'CANCEL_URL');
-	} else {
-	$wiki_notification_content['author'] = sprintf(__("Lieber Autor,
-
-%s wurde verändert
-
-Du kannst die Wiki-Seite hier vollständig lesen: %s
-
-%s
-
-Danke,
-
-%s
-
-Abonnement kündigen: %s", 'ps-wiki'), 'POST_TITLE', 'POST_URL', 'EXCERPT', 'BLOGNAME', 'CANCEL_URL');
-
-			}
-
-		//Benachrichtigungstext formatieren
-		foreach ($wiki_notification_content as $key => $content) {
-			$wiki_notification_content[$key] = str_replace("BLOGNAME",$blog_name,$wiki_notification_content[$key]);
-			$wiki_notification_content[$key] = str_replace("POST_TITLE",$post_title,$wiki_notification_content[$key]);
-			$wiki_notification_content[$key] = str_replace("EXCERPT",$post_excerpt,$wiki_notification_content[$key]);
-			$wiki_notification_content[$key] = str_replace("POST_URL",$post_url,$wiki_notification_content[$key]);
-			$wiki_notification_content[$key] = str_replace("REVERT_URL",$revert_url,$wiki_notification_content[$key]);
-			$wiki_notification_content[$key] = str_replace("\'","'",$wiki_notification_content[$key]);
-		}
-
-		global $blog_id;
-
-		$query = "SELECT * FROM " . $this->db_prefix . "wiki_subscriptions WHERE blog_id = {$blog_id} AND wiki_id = {$post->ID}";
-		$subscription_emails = $wpdb->get_results( $query, ARRAY_A );
-
-		if (count($subscription_emails) > 0){
-			foreach ($subscription_emails as $subscription_email){
-			$loop_notification_content = $wiki_notification_content['user'];
-			$loop_notification_content = $wiki_notification_content['user'];
-
-			if ($subscription_email['user_id'] > 0) {
-				if ($subscription_email['user_id'] == $post->post_author) {
-				$loop_notification_content = $wiki_notification_content['author'];
-				}
-				$user = get_userdata($subscription_email['user_id']);
-				$subscription_to = $user->user_email;
-			} else {
-				$subscription_to = $subscription_email['email'];
-			}
-
-			$loop_notification_content = str_replace("CANCEL_URL",$cancel_url . $subscription_email['ID'],$loop_notification_content);
-			$subject_content = $blog_name . ': ' . __('Änderungen an der Wiki-Seite', 'ps-wiki');
-			$from_email = $admin_email;
-			$message_headers = "MIME-Version: 1.0\n" . "From: " . $blog_name .	 " <{$from_email}>\n" . "Content-Type: text/plain; charset=\"" . get_option('blog_charset') . "\"\n";
-
-			wp_mail($subscription_to, $subject_content, $loop_notification_content, $message_headers);
-			}
-		}
-	}
 }
 
 $wiki = Wiki::get_instance();
