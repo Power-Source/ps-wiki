@@ -1,10 +1,10 @@
 <?php
 /*
 Plugin Name: PS Wiki
-Plugin URI: https://cp-psource.github.io/wiki/
+Plugin URI: https://power-source.github.io/ps-wiki/
 Description: Ein simples aber mächtiges Wiki-Plugin für Deine ClassicPress Seite, inkl. Multisitesupport, Frontend-Editor, Rechtemanagment.
 Author: PSOURCE
-Version: 1.0.0
+Version: 1.0.1
 Author URI: https://github.com/Power-Source
 Text Domain: ps-wiki
 */
@@ -29,7 +29,7 @@ require_once dirname(__FILE__) . '/lib/classes/WikiNotifications.php';
 
 class Wiki {
     // ...existing code...
-    var $version = '1.0.0';
+    var $version = '1.0.1';
     var $db_prefix = '';
     var $settings = array();
     var $slug_tags = 'tags';

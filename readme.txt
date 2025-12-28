@@ -3,7 +3,7 @@ Contributors: DerN3rd (PSOURCE)
 Tags: multisite, wiki, wikipedia
 Requires at least: 4.9
 Tested up to: 5.6
-Stable tag: 1.0.0
+Stable tag: 1.0.1
 Requires PHP: 7.0
 License: GPLv2 or later
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
@@ -61,6 +61,13 @@ You are welcome to send us your optimized .po/.mo files for your native language
 Use the opportunity to do so on GitHub or send your files to: webmaster@n3rds.work
 
 == ChangeLog ==
+
+= 1.0.1 =
+
+* Add: Autolink Funktion
+* Add Inhaltsverzeichnis
+* Add List/Grid Archive
+* Fix: Wiki Sortierung
 
 = 1.0.0 =
 
