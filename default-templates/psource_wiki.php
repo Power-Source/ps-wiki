@@ -60,7 +60,7 @@ get_header( 'wiki' );
                     } elseif ($action !== 'view') {
                         echo $wiki->decider(apply_filters('the_content', $post->post_content), $action, $revision_id, $left, $right, false);
                     } else {
-                        echo apply_filters('the_content', $post->post_content);
+                        echo '<div class="entry-content">' . apply_filters('the_content', $post->post_content) . '</div>';
                     }
                 ?>
                 <?php } ?>
