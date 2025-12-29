@@ -75,6 +75,33 @@ class Wiki_Admin_Page_Settings {
 				if ( class_exists('Wiki_Premium') ) {
 					Wiki_Premium::get_instance()->admin_page_settings();
 				} ?>
+
+				<!-- Benutzerdefiniertes Wiki-CSS -->
+				<tr valign="top">
+					<th><label for="psource_wiki-custom_css"><?php _e('Eigenes Wiki-CSS', 'ps-wiki'); ?></label></th>
+					<td>
+						<textarea id="psource_wiki-custom_css" name="wiki[custom_css]" rows="8" cols="60" style="font-family:monospace;width:100%;max-width:600px;"><?php echo esc_textarea($wiki->get_setting('custom_css', '')); ?></textarea>
+						<br><span class="description"><?php _e('Hier kannst du eigenes CSS für das Wiki einfügen. Es wird auf allen Wiki-Seiten eingebunden.', 'ps-wiki'); ?></span>
+						<br><br>
+						<strong><?php _e('Verfügbare CSS-Selektoren:', 'ps-wiki'); ?></strong>
+						<ul style="columns:2;max-width:600px;">
+							<li>.psource_wiki_tabs</li>
+							<li>.psource_wiki_tabs ul</li>
+							<li>.psource_wiki_tabs li</li>
+							<li>.psource_wiki_content</li>
+							<li>.psource_wiki_grid</li>
+							<li>.psource-wiki-archive-list</li>
+							<li>.psource-wiki-archive-entry</li>
+							<li>.psource-wiki-grid-item</li>
+							<li>.psource-wiki-archive-title</li>
+							<li>.psource-wiki-archive-meta</li>
+							<li>.psource-wiki-archive-excerpt</li>
+							<li>.psource_wiki_title</li>
+							<li>.psource_wiki_message</li>
+						</ul>
+						<span class="description"><?php _e('Nutze diese Selektoren, um gezielt das Aussehen des Wikis zu verändern.', 'ps-wiki'); ?></span>
+					</td>
+				</tr>
 			</table>
 
 			<?php
@@ -114,8 +141,10 @@ class Wiki_Admin_Page_Settings {
 						$wiki->settings['display_mode'] = isset($_POST['wiki']['display_mode']) && in_array($_POST['wiki']['display_mode'], array('list','grid')) ? $_POST['wiki']['display_mode'] : 'list';
 						$wiki->settings['excerpt_length'] = isset($_POST['wiki']['excerpt_length']) ? max(5, intval($_POST['wiki']['excerpt_length'])) : 30;
 						$wiki->settings['excerpt_type'] = isset($_POST['wiki']['excerpt_type']) && in_array($_POST['wiki']['excerpt_type'], array('words','chars')) ? $_POST['wiki']['excerpt_type'] : 'words';
+
 						$wiki->settings['autolink_enabled'] = isset($_POST['wiki']['autolink_enabled']) ? 1 : 0;
 						$wiki->settings['toc_auto'] = isset($_POST['wiki']['toc_auto']) ? 1 : 0;
+						$wiki->settings['custom_css'] = isset($_POST['wiki']['custom_css']) ? wp_kses_post($_POST['wiki']['custom_css']) : '';
 						$wiki->settings = apply_filters('wiki_save_settings', $wiki->settings, $_POST['wiki']);
 
 			update_option('wiki_settings', $wiki->settings);

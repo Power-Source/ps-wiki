@@ -1853,6 +1853,7 @@ if ( file_exists($wiki->plugin_dir . 'premium/wiki-premium.php') ) {
 }
 
 require_once dirname(__FILE__) . '/lib/functions-wiki-autolink.php';
+require_once dirname(__FILE__) . '/lib/custom-css.php';
 
 // Archiv-Titel für Wiki-Kategorien anpassen
 add_filter('get_the_archive_title', function($title) {
