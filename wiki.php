@@ -101,7 +101,7 @@ class Wiki {
 		   add_action('wp_enqueue_scripts', array( &$this, 'wp_enqueue_scripts'), 10);
 		   // Mobile Tabs-Dropdown für kleine Bildschirme einbinden
 		   add_action('wp_enqueue_scripts', function() {
-			   if (is_singular('psource_wiki') || is_tax('psource_wiki_category')) {
+			   if (is_singular('psource_wiki')) {
 				   wp_enqueue_script('psource-wiki-tabs-mobile', plugins_url('js/wiki-tabs-mobile.js', __FILE__), array(), '1.0', true);
 			   }
 		   });
@@ -230,18 +230,6 @@ class Wiki {
 			       $plugin_template = $this->plugin_dir . 'default-templates/psource_wiki.php';
 			       if ( file_exists($plugin_template) ) {
 				       remove_filter('the_content', array(&$this, 'theme'), 1);
-				       return $plugin_template;
-			       }
-		       }
-
-		       // Taxonomie-Archiv: Wiki-Kategorie
-		       if ( is_tax('psource_wiki_category') ) {
-			       $templates = array('taxonomy-psource_wiki_category.php');
-			       if ( $new_template = locate_template($templates) ) {
-				       return $new_template;
-			       }
-			       $plugin_template = $this->plugin_dir . 'default-templates/taxonomy-psource_wiki_category.php';
-			       if ( file_exists($plugin_template) ) {
 				       return $plugin_template;
 			       }
 		       }
@@ -1854,26 +1842,8 @@ if ( file_exists($wiki->plugin_dir . 'premium/wiki-premium.php') ) {
 
 require_once dirname(__FILE__) . '/lib/functions-wiki-autolink.php';
 require_once dirname(__FILE__) . '/lib/custom-css.php';
+require_once dirname(__FILE__) . '/lib/functions-wiki-archive.php';
+require_once dirname(__FILE__) . '/lib/wiki-archive-grid.php';
 
-// Archiv-Titel für Wiki-Kategorien anpassen
-add_filter('get_the_archive_title', function($title) {
-	if (is_tax('psource_wiki_category')) {
-		$term = get_queried_object();
-		if ($term && !is_wp_error($term)) {
-			return esc_html($term->name);
-		}
-	}
-	return $title;
-});
-// Erzwinge das Plugin-Template für Wiki-Kategoriearchive
-add_filter('template_include', function($template) {
-	if (is_tax('psource_wiki_category')) {
-		$plugin_template = dirname(__FILE__) . '/default-templates/taxonomy-psource_wiki_category.php';
-		if (file_exists($plugin_template)) {
-			return $plugin_template;
-		}
-	}
-	return $template;
-});
 
 

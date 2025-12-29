@@ -1,0 +1,32 @@
+.psource-wiki-grid {
+  display: grid;
+  grid-template-columns: repeat(1, 1fr);
+  gap: 1.5em;
+}
+@media (min-width: 600px) {
+  .psource-wiki-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+@media (min-width: 900px) {
+  .psource-wiki-grid {
+    grid-template-columns: repeat(3, 1fr);
+  }
+}
+@media (min-width: 1200px) {
+  .psource-wiki-grid {
+    grid-template-columns: repeat(4, 1fr);
+  }
+}
+.psource-wiki-grid-item {
+  border: 2px solid #241d1d;
+  border-radius: 8px;
+  padding: 1.2em 1.2em 1.5em 1.2em;
+  box-shadow: 0 2px 6px rgba(0,0,0,0.04);
+  background: #fff;
+  transition: box-shadow 0.2s;
+}
+.psource-wiki-grid-item:hover {
+  box-shadow: 0 4px 16px rgba(0,0,0,0.10);
+  background: #f0f6ff;
+}
