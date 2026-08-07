@@ -3,7 +3,8 @@ Contributors: DerN3rd (PSOURCE)
 Tags: multisite, wiki, wikipedia
 Requires at least: 4.9
 Tested up to: 5.6
-Stable tag: 1.0.1
+ClassicPress: 2.7.0
+Stable tag: 1.0.2
 Requires PHP: 7.0
 License: GPLv2 or later
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
@@ -61,6 +62,19 @@ You are welcome to send us your optimized .po/.mo files for your native language
 Use the opportunity to do so on GitHub or send your files to: webmaster@n3rds.work
 
 == ChangeLog ==
+
+= 1.0.2 =
+
+* Fix: PHP 8 TypeError in Wiki->theme() bei TOC-Verarbeitung behoben
+* Fix: TOC-Generierung liefert konsistent toc und content (inkl. Empty-Case)
+* Fix: TOC-Shortcode gegen ungültige Rückgabewerte abgesichert
+* Fix: Einstellungen-Formular-Markup korrigiert (fehlender Tabellen-Row)
+* Fix: Settings-Speichern gegen fehlerhafte/fehlende POST-Daten gehärtet
+* Change: Veraltete Upgrade/Pro-Hinweise aus den Einstellungen entfernt
+* Change: Früheres Premium-Gating entfernt, alle enthaltenen Features standardmäßig aktiv
+* Change: Klassenname von Wiki_Premium auf Wiki_Features umgestellt
+* Change: Feature-Datei von premium/wiki-premium.php nach premium/wiki-features.php umbenannt
+* Change: Loader in wiki.php auf premium/wiki-features.php aktualisiert
 
 = 1.0.1 =
 

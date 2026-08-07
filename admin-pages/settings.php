@@ -41,6 +41,7 @@ class Wiki_Admin_Page_Settings {
 						<span class="description"><?php _e('Fügt am Anfang jeder Wiki-Seite automatisch ein Inhaltsverzeichnis (H2/H3) ein. Alternativ kannst du den Shortcode [ps_wiki_toc] an beliebiger Stelle nutzen.', 'ps-wiki'); ?></span>
 					</td>
 				</tr>
+				<tr valign="top">
 					<th scope="row"><label for="psource_wiki-autolink_enabled"><?php _e('Automatische Wiki-Verlinkung', 'ps-wiki'); ?></label></th>
 					<td>
 						<input type="checkbox" id="psource_wiki-autolink_enabled" name="wiki[autolink_enabled]" value="1" <?php checked($wiki->get_setting('autolink_enabled', 1), 1); ?> />
@@ -72,24 +73,8 @@ class Wiki_Admin_Page_Settings {
 					   </td>
 				   </tr>
 				<?php
-				if ( class_exists('Wiki_Premium') ) {
-					Wiki_Premium::get_instance()->admin_page_settings();
-				} ?>
+				Wiki_Features::get_instance()->admin_page_settings(); ?>
 			</table>
-
-			<?php
-			if ( ! class_exists('Wiki_Premium') ) : ?>
-			<h3><?php _e('<a target="_blank" href="https://cp-psource.github.io/ps-wiki/">Upgrade jetzt</a> um neue Features zu erhalten!', 'ps-wiki'); ?></h3>
-
-			<ul>
-				<li><?php _e('Gib die Anzahl der Breadcrumbs an, die dem Titel hinzugefügt werden sollen', 'ps-wiki'); ?></li>
-				<li><?php _e('Gib einen benutzerdefinierten Namen für Wikis an', 'ps-wiki'); ?></li>
-				<li><?php _e('Sub-Wikis hinzufügen', 'ps-wiki'); ?></li>
-				<li><?php _e('Gib an wie Sub-Wikis bestellt werden sollen', 'ps-wiki'); ?></li>
-				<li><?php _e('Ermögliche anderen Benutzern als dem Administrator, Wikis zu bearbeiten', 'ps-wiki'); ?></li>
-			</ul>
-			<?php
-			endif; ?>
 			<p class="submit">
 			<input type="submit" class="button-primary" name="submit_settings" value="<?php _e('Änderungen speichern', 'ps-wiki') ?>" />
 			</p>
@@ -103,7 +88,9 @@ class Wiki_Admin_Page_Settings {
 		if ( isset($_POST['wiki_settings_nonce']) ) {
 			check_admin_referer('wiki_save_settings', 'wiki_settings_nonce');
 
-			$new_slug = untrailingslashit($_POST['wiki']['slug']);
+			$posted_wiki = ( isset($_POST['wiki']) && is_array($_POST['wiki']) ) ? $_POST['wiki'] : array();
+
+			$new_slug = isset($posted_wiki['slug']) ? untrailingslashit($posted_wiki['slug']) : $wiki->get_setting('slug');
 
 			if ( $wiki->get_setting('slug') != $new_slug )
 				update_option('wiki_flush_rewrites', 1);
@@ -111,12 +98,12 @@ class Wiki_Admin_Page_Settings {
 					$wiki->settings['slug'] = $new_slug;
 					// Darstellung speichern
 
-						$wiki->settings['display_mode'] = isset($_POST['wiki']['display_mode']) && in_array($_POST['wiki']['display_mode'], array('list','grid')) ? $_POST['wiki']['display_mode'] : 'list';
-						$wiki->settings['excerpt_length'] = isset($_POST['wiki']['excerpt_length']) ? max(5, intval($_POST['wiki']['excerpt_length'])) : 30;
-						$wiki->settings['excerpt_type'] = isset($_POST['wiki']['excerpt_type']) && in_array($_POST['wiki']['excerpt_type'], array('words','chars')) ? $_POST['wiki']['excerpt_type'] : 'words';
-						$wiki->settings['autolink_enabled'] = isset($_POST['wiki']['autolink_enabled']) ? 1 : 0;
-						$wiki->settings['toc_auto'] = isset($_POST['wiki']['toc_auto']) ? 1 : 0;
-						$wiki->settings = apply_filters('wiki_save_settings', $wiki->settings, $_POST['wiki']);
+						$wiki->settings['display_mode'] = isset($posted_wiki['display_mode']) && in_array($posted_wiki['display_mode'], array('list','grid')) ? $posted_wiki['display_mode'] : 'list';
+						$wiki->settings['excerpt_length'] = isset($posted_wiki['excerpt_length']) ? max(5, intval($posted_wiki['excerpt_length'])) : 30;
+						$wiki->settings['excerpt_type'] = isset($posted_wiki['excerpt_type']) && in_array($posted_wiki['excerpt_type'], array('words','chars')) ? $posted_wiki['excerpt_type'] : 'words';
+						$wiki->settings['autolink_enabled'] = isset($posted_wiki['autolink_enabled']) ? 1 : 0;
+						$wiki->settings['toc_auto'] = isset($posted_wiki['toc_auto']) ? 1 : 0;
+						$wiki->settings = apply_filters('wiki_save_settings', $wiki->settings, $posted_wiki);
 
 			update_option('wiki_settings', $wiki->settings);
 

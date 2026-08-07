@@ -36,12 +36,17 @@ function ps_wiki_autolink_titles($content) {
 /**
  * Generiert ein Inhaltsverzeichnis (TOC) aus H2/H3-Überschriften
  * @param string $content
- * @return string TOC-HTML
+ * @return array{toc:string,content:string}
  */
 function ps_wiki_generate_toc($content) {
     $matches = array();
     preg_match_all('/<h([23])[^>]*>(.*?)<\/h[23]>/', $content, $matches, PREG_SET_ORDER);
-    if (empty($matches)) return '';
+    if (empty($matches)) {
+        return array(
+            'toc' => '',
+            'content' => $content,
+        );
+    }
     $toc = '<div class="ps-wiki-toc"><strong>' . __('Inhaltsverzeichnis', 'ps-wiki') . '</strong><ul>';
     $ids = array();
     foreach ($matches as $m) {
@@ -71,6 +76,6 @@ function ps_wiki_toc_shortcode($atts, $content = null) {
     global $post;
     if (!$post) return '';
     $data = ps_wiki_generate_toc($post->post_content); // KEIN apply_filters mehr!
-    return $data['toc'];
+    return is_array($data) && isset($data['toc']) ? $data['toc'] : '';
 }
 add_shortcode('ps_wiki_toc', 'ps_wiki_toc_shortcode');

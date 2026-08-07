@@ -4,7 +4,7 @@ Plugin Name: PS Wiki
 Plugin URI: https://power-source.github.io/ps-wiki/
 Description: Ein simples aber mächtiges Wiki-Plugin für Deine ClassicPress Seite, inkl. Multisitesupport, Frontend-Editor, Rechtemanagment.
 Author: PSOURCE
-Version: 1.0.1
+Version: 1.0.2
 Author URI: https://github.com/Power-Source
 Text Domain: ps-wiki
 */
@@ -29,7 +29,7 @@ require_once dirname(__FILE__) . '/lib/classes/WikiNotifications.php';
 
 class Wiki {
     // ...existing code...
-    var $version = '1.0.1';
+    var $version = '1.0.2';
     var $db_prefix = '';
     var $settings = array();
     var $slug_tags = 'tags';
@@ -611,7 +611,9 @@ class Wiki {
 			if ($wiki_toc_auto) {
 				if (function_exists('ps_wiki_generate_toc')) {
 					$toc_data = ps_wiki_generate_toc($wiki_content);
-					$wiki_content = $toc_data['toc'] . $toc_data['content'];
+					if (is_array($toc_data) && isset($toc_data['toc'], $toc_data['content'])) {
+						$wiki_content = $toc_data['toc'] . $toc_data['content'];
+					}
 				}
 			}
 			$new_content .= $this->decider($wiki_content, $action, $revision_id, $left, $right);
@@ -805,12 +807,10 @@ class Wiki {
 				$top .= join(get_option("psource_meta_seperator", " > "), $crumbs);
 				$taxonomy = "";
 
-				if ( class_exists('Wiki_Premium') ) {
-					$category_list = get_the_term_list( 0, 'psource_wiki_category', __( 'Wiki-Kategorie:', 'ps-wiki' ) . ' <span class="psource_wiki-category">', '', '</span> ' );
-					$tags_list = get_the_term_list( 0, 'psource_wiki_tag', __( 'Tags:', 'ps-wiki' ) . ' <span class="psource_wiki-tags">', ' ', '</span> ' );
-					$taxonomy .= apply_filters('the_terms', $category_list, 'psource_wiki_category', __( 'Wiki-Kategorie:', 'ps-wiki' ) . ' <span class="psource_wiki-category">', '', '</span> ' );
-					$taxonomy .= apply_filters('the_terms', $tags_list, 'psource_wiki_tag', __( 'Tags:', 'ps-wiki' ) . ' <span class="psource_wiki-tags">', ' ', '</span> ' );
-				}
+				$category_list = get_the_term_list( 0, 'psource_wiki_category', __( 'Wiki-Kategorie:', 'ps-wiki' ) . ' <span class="psource_wiki-category">', '', '</span> ' );
+				$tags_list = get_the_term_list( 0, 'psource_wiki_tag', __( 'Tags:', 'ps-wiki' ) . ' <span class="psource_wiki-tags">', ' ', '</span> ' );
+				$taxonomy .= apply_filters('the_terms', $category_list, 'psource_wiki_category', __( 'Wiki-Kategorie:', 'ps-wiki' ) . ' <span class="psource_wiki-category">', '', '</span> ' );
+				$taxonomy .= apply_filters('the_terms', $tags_list, 'psource_wiki_tag', __( 'Tags:', 'ps-wiki' ) . ' <span class="psource_wiki-tags">', ' ', '</span> ' );
 
 				$children = get_posts(array(
 					'post_parent' => $post->ID,
@@ -1202,17 +1202,15 @@ class Wiki {
 
 		$content	= '';
 
-		if ( class_exists('Wiki_Premium') ) {
-			$content .= ( $frontend ) ? '<h3 class="psource_wiki_header">' . __('Wiki Kategorien/Tags', 'ps-wiki') . '</h3>' : '';
-			$content .= '<div class="psource_wiki_meta_box">'. Wiki_Premium::get_instance()->wiki_taxonomies(false) . '</div>';
-		}
+		$content .= ( $frontend ) ? '<h3 class="psource_wiki_header">' . __('Wiki Kategorien/Tags', 'ps-wiki') . '</h3>' : '';
+		$content .= '<div class="psource_wiki_meta_box">'. Wiki_Features::get_instance()->wiki_taxonomies(false) . '</div>';
 
 		$content .= ( $frontend ) ? '<h3 class="psource_wiki_header">' . __('Wiki-Benachrichtigungen', 'ps-wiki') . '</h3>' : '';
 		$content .= '<div class="psource_wiki_meta_box">' . $this->notifications_meta_box($post, false) . '</div>';
 
-		if ( current_user_can('edit_wiki_privileges') && class_exists('Wiki_Premium') ) {
+		if ( current_user_can('edit_wiki_privileges') ) {
 			$content .= ( $frontend ) ? '<h3 class="psource_wiki_header">' . __('Wiki-Berechtigungen', 'ps-wiki') . '</h3>' : '';
-			$content .= '<div class="psource_wiki_meta_box">' . Wiki_Premium::get_instance()->privileges_meta_box($post, false) . '</div>';
+			$content .= '<div class="psource_wiki_meta_box">' . Wiki_Features::get_instance()->privileges_meta_box($post, false) . '</div>';
 		}
 		return $content;
 	}
@@ -1623,10 +1621,8 @@ class Wiki {
 			load_muplugin_textdomain('ps-wiki', dirname(plugin_basename(__FILE__)).'/languages');
 		else
 			load_plugin_textdomain('ps-wiki', false, dirname(plugin_basename(__FILE__)).'/languages');
-		if ( class_exists('Wiki_Premium') ) {
-			// Taxonomien MÜSSEN vor benutzerdefinierten Beitragstypen registriert werden
-			Wiki_Premium::get_instance()->register_taxonomies();
-		}
+		// Taxonomien MÜSSEN vor benutzerdefinierten Beitragstypen registriert werden
+		Wiki_Features::get_instance()->register_taxonomies();
 
 		$this->register_post_types();
 
@@ -1848,8 +1844,8 @@ class Wiki {
 
 $wiki = Wiki::get_instance();
 
-if ( file_exists($wiki->plugin_dir . 'premium/wiki-premium.php') ) {
-	require_once $wiki->plugin_dir . 'premium/wiki-premium.php';
+if ( file_exists($wiki->plugin_dir . 'premium/wiki-features.php') ) {
+	require_once $wiki->plugin_dir . 'premium/wiki-features.php';
 }
 
 require_once dirname(__FILE__) . '/lib/functions-wiki-autolink.php';
