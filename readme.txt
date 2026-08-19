@@ -43,7 +43,7 @@ Lasse Wiki-Archive aufsteigend oder absteigend sortieren – nach Titel, Erstell
 
 == Frontend-Editor ==
 
-![PS Wiki Frontend-Editor](https://psource.eimen.net/wp-content/uploads/sites/10/2026/08/PS-Wiki-Editor.jpeg)
+![PS Wiki Frontend-Editor](assets/PS-Wiki-Editor.jpeg)
 
 Die umfassende Frontend-Oberfläche macht die Zusammenarbeit für jeden Nutzer zum Kinderspiel.
 
@@ -55,7 +55,7 @@ Verwalte und verfolge Änderungen über den Reiter „Verlauf“. Revisionen kö
 
 == Bessere Suchergebnisse ==
 
-![PS Wiki Dashboard](https://psource.eimen.net/wp-content/uploads/sites/10/2026/08/PS-Wiki-Dashboard.jpeg)
+![PS Wiki Dashboard](assets/PS-Wiki-Dashboard.jpeg)
 
 Durchsuche schnell Hunderte von Beiträgen, Aktualisierungen und Diskussionen. PS Wiki verwendet Wiki-spezifische Schlagworte und Kategorien, um das Auffinden von Inhalten zu erleichtern.
 
@@ -65,7 +65,7 @@ Wiki-spezifische Schlagworte und Kategorien sorgen für eine leistungsstärkere 
 
 == Diskussionsforen ==
 
-![PS Wiki Diskussionen](https://psource.eimen.net/wp-content/uploads/sites/10/2026/08/PS-Wiki-Diskussionen.jpeg)
+![PS Wiki Diskussionen](assets/PS-Wiki-Diskussionen.jpeg)
 
 Themenspezifische Diskussionsforen bieten Nutzern vielfältige Interaktionsmöglichkeiten.
 
@@ -73,7 +73,7 @@ Es funktioniert ähnlich wie ein Cloud-Dokument zur Beitragserstellung – inklu
 
 == Integration von PS Mitgliedschaften und PSOURCE-Plugins ==
 
-![PS Wiki Mitgliedschaften](https://psource.eimen.net/wp-content/uploads/sites/10/2026/08/PS-Wiki-Mitgliedschaften.jpeg)
+![PS Wiki Mitgliedschaften](assets/PS-Wiki-Mitgliedschaften.jpeg)
 
 Dank der integrierten PS Mitgliedschaften-Anbindung kannst Du die Erstellung von Wikis einschränken und unbegrenzte Wikis als kostenpflichtiges Upgrade anbieten.
 
