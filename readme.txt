@@ -2,66 +2,102 @@
 Contributors: DerN3rd (PSOURCE)
 Tags: multisite, wiki, wikipedia
 Requires at least: 4.9
-Tested up to: 5.6
-ClassicPress: 2.7.0
-Stable tag: 1.0.2
-Requires PHP: 7.0
+WordPress: 7.0.4
+ClassicPress: 2.7.1
+Stable tag: 1.0.3
+Requires PHP: 8.0
 License: GPLv2 or later
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
 
-Ein simples aber mächtiges Wiki-Plugin für Deine ClassicPress Seite, inkl. Multisitesupport, Frontend-Editor, Rechtemanagment.
+Arbeitet gemeinsam an Inhalten, diskutiert, nutzt Crowdsourcing und erstellt bessere Inhalte – mit PS Wiki.
 
-A simple but powerful wiki plugin for your ClassicPress site, including multisite support, frontend editor, rights management.
+== Beschreibung ==
 
-== Description ==
+Erweitere ClassicPress und WordPress mit PS Wiki um Funktionen für die gemeinsame Erstellung und Bearbeitung von Inhalten direkt im Frontend.
 
-= DEUTSCH = 
+Nutze Crowdsourcing für alles Mögliche – von Informationsblättern und Bedienungsanleitungen bis hin zu kreativen Schreibprojekten.
 
-PS Wiki ist alles, was Du brauchst, um eine ClassicPress-Seite/Netzwerk in ein leistungsstarkes, benutzerfreundliches Wiki zu verwandeln.
+PS Wiki macht es einfach, verschiedenste Projekte zu realisieren: von einer Sammlung nutzerverwalteter Dokumentationen bis hin zu einer Fan-Seite für Deine Lieblingsserie, auf der Informationen zu Charakteren, Schauplätzen, Regisseuren und Episoden gesammelt und diskutiert werden können.
 
-Mit diesem ausgeklügelten, leistungsstarken Plugin kannst Du ganz einfach beliebig viele Wikis in ClassicPress, Multisite oder BuddyPress erstellen.
+Gibt es eine bessere Möglichkeit, Deine Nutzer einzubinden, als ihnen zu ermöglichen, einen sinnvollen Beitrag zu leisten?
 
-PS Wiki funktioniert sofort und passt sich jedem ClassicPress-Theme an. Hole das Beste aus der Integration mit 7 integrierten Widgets heraus.
+== Aktivieren und loslegen ==
 
-Erstelle einen Ort, an dem Benutzer in wenigen Minuten Ideen sammeln, entwickeln und austauschen können.
+PS Wiki funktioniert sofort nach der Installation mit ClassicPress und WordPress, unterstützt Multisite und passt sich optisch an fast jedes Theme an.
 
-Blitzschnelle Ergebnisse
-Netzwerksuche verwendet unser leistungsstarkes PS-Multisite Beitragsindex Plugin, das alle Beiträge auf jeder Seite in Deinem Netzwerk indiziert, 
-um eine blitzschnelle Suche in Deinem gesamten Netzwerk zu erstellen.
+=== 7 integrierte Widgets ===
 
-= ENGLISH =
+Nutze die mitgelieferten Widgets, um Wiki-Seiten, beliebte oder neue Wikis, die Wiki-Suche, Kategorien, Schlagworte (Tags) oder eine Tag-Wolke in jedem beliebigen Widget-Bereich anzuzeigen.
 
-PS Wiki is everything you need to turn a ClassicPress site/network into a powerful, user-friendly wiki.
+=== Steuerung des Nutzerzugriffs ===
 
-With this sophisticated, powerful plugin you can easily create as many wikis as you like in ClassicPress, Multisite or BuddyPress.
+Beschränke die Bearbeitungsrechte direkt nach der Installation basierend auf der Nutzerrolle oder – in Kombination mit PS Mitgliedschaften – sogar abhängig von der Mitgliedschaftsstufe.
 
-PS Wiki works out of the box and adapts to any ClassicPress theme. Get the most out of the integration with 7 built-in widgets.
+=== Individuelle Titel ===
 
-Create a place where users can brainstorm, develop, and share ideas in minutes.
+Gib Deinen Wikis und Unter-Wikis eigene Namen, wie zum Beispiel „Community-Infoblatt“, „Anleitungen“ oder „Fan-Fakten-Sammlung“. Gestalte sie ganz nach Deinen Vorstellungen.
 
-Lightning fast results
-Network Search uses our powerful PS-Multisite Post Index Plugin that indexes all posts on every site in your network,
-to create a lightning-fast search across your entire network.
+=== Konfiguration der Anzeigereihenfolge ===
 
-== Languages ==
+Lasse Wiki-Archive aufsteigend oder absteigend sortieren – nach Titel, Erstellungsdatum oder in zufälliger Reihenfolge; ganz so, wie es für Dich am besten passt.
 
-* Deutsch: de_DE
-* English: en_GB
-* English: en_US
-* France: fr_FR
-* Italiono: it_IT
-* Dutch: nl_NL
-* Polish: pl_PL
-* Spanish: es_ES
-* Portuguese: pt_PT
+== Frontend-Editor ==
 
-Du kannst uns gerne Deine optimierten .po/.mo Dateien für Deine Muttersprache zukommen lassen. 
-Nutze die Möglichkeit dazu auf GitHub oder sende Deine Dateien an: webmaster@n3rds.work
+![PS Wiki Frontend-Editor](https://psource.eimen.net/wp-content/uploads/sites/10/2026/08/PS-Wiki-Editor.jpeg)
 
-You are welcome to send us your optimized .po/.mo files for your native language. 
-Use the opportunity to do so on GitHub or send your files to: webmaster@n3rds.work
+Die umfassende Frontend-Oberfläche macht die Zusammenarbeit für jeden Nutzer zum Kinderspiel.
+
+=== Frontend-Steuerung – genau wie bei einem echten Wiki ===
+
+PS Wiki bietet eine einfache Frontend-Oberfläche, die die Bedienung unglaublich leicht macht. Erstelle und bearbeite Inhalte, prüfe diese oder beteilige Dich an Diskussionen – und das alles direkt im Frontend Deiner Webseite.
+
+Verwalte und verfolge Änderungen über den Reiter „Verlauf“. Revisionen können verglichen und Inhalte mit nur einem Klick wiederhergestellt werden – für alle Fälle.
+
+== Bessere Suchergebnisse ==
+
+![PS Wiki Dashboard](https://psource.eimen.net/wp-content/uploads/sites/10/2026/08/PS-Wiki-Dashboard.jpeg)
+
+Durchsuche schnell Hunderte von Beiträgen, Aktualisierungen und Diskussionen. PS Wiki verwendet Wiki-spezifische Schlagworte und Kategorien, um das Auffinden von Inhalten zu erleichtern.
+
+Dank Dashboard-Verwaltung und benutzerdefinierten Beitragstypen (Custom Post Types) haben Administratoren auch vom Backend aus schnellen Zugriff.
+
+Wiki-spezifische Schlagworte und Kategorien sorgen für eine leistungsstärkere Suche.
+
+== Diskussionsforen ==
+
+![PS Wiki Diskussionen](https://psource.eimen.net/wp-content/uploads/sites/10/2026/08/PS-Wiki-Diskussionen.jpeg)
+
+Themenspezifische Diskussionsforen bieten Nutzern vielfältige Interaktionsmöglichkeiten.
+
+Es funktioniert ähnlich wie ein Cloud-Dokument zur Beitragserstellung – inklusive Kommentarfunktion, gemeinschaftlichem Schreiben und Versionsverwaltung. Kläre Sachverhalte, stelle Fragen, arbeitet gemeinsam an Recherchen oder bringe neue Perspektiven ein.
+
+== Integration von PS Mitgliedschaften und PSOURCE-Plugins ==
+
+![PS Wiki Mitgliedschaften](https://psource.eimen.net/wp-content/uploads/sites/10/2026/08/PS-Wiki-Mitgliedschaften.jpeg)
+
+Dank der integrierten PS Mitgliedschaften-Anbindung kannst Du die Erstellung von Wikis einschränken und unbegrenzte Wikis als kostenpflichtiges Upgrade anbieten.
+
+PS Wiki lässt sich nahtlos in PS Mitgliedschaften integrieren und erweitert damit die Möglichkeiten, Inhalte und Zugriffsrechte innerhalb Deiner Webseite oder Deines Netzwerks zu steuern.
+
+== Deiner Fantasie sind keine Grenzen gesetzt ==
+
+PS Wiki ist ein benutzerfreundliches Plugin, das das volle Potenzial von Taxonomien und den Beziehungen zwischen verschiedenen Beitragstypen ausschöpft.
+
+Ob Fan-Seiten, Gaming-Wikis, Plattformen für gemeinsame Forschungsprojekte oder einfach eine umfassende Liste der Pflanzenwelt in Deiner Region – mit PS Wiki ist all das möglich.
+
+Mit PS Wiki entscheidest Du selbst, wie Deine Community Inhalte erstellt, organisiert, diskutiert und weiterentwickelt.
+
+== Screenshots ==
+
+1. Der Frontend-Editor ermöglicht das Erstellen und Bearbeiten von Wiki-Inhalten direkt auf der Webseite.
+2. Die Dashboard-Verwaltung bietet Administratoren einen schnellen Überblick über die Wiki-Inhalte.
+3. Diskussionsforen ermöglichen die gemeinsame Bearbeitung und Diskussion von Inhalten.
+4. PS Wiki kann mit PS Mitgliedschaften kombiniert werden, um den Zugriff auf Funktionen und Inhalte zu steuern.
 
 == ChangeLog ==
+
+= 1.0.3 =
+* Archivansicht angepasst
 
 = 1.0.2 =
 

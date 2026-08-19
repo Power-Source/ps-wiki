@@ -4,13 +4,13 @@ Plugin Name: PS Wiki
 Plugin URI: https://power-source.github.io/ps-wiki/
 Description: Ein simples aber mächtiges Wiki-Plugin für Deine ClassicPress Seite, inkl. Multisitesupport, Frontend-Editor, Rechtemanagment.
 Author: PSOURCE
-Version: 1.0.2
-Author URI: https://github.com/Power-Source
+Version: 1.0.3
+Author URI: https://psource.eimen.net/
 Text Domain: ps-wiki
 */
 
 /*
-Copyright 2019-2026 PSOURCE (https://github.com/Power-Source)
+Copyright 2019-2026 PSOURCE (https://psource.eimen.net/)
 Author - PSOURCE
 This program is free software; you can redistribute it and/or modify
 it under the terms of the GNU General Public License (Version 2 - GPLv2) as published by
@@ -29,7 +29,7 @@ require_once dirname(__FILE__) . '/lib/classes/WikiNotifications.php';
 
 class Wiki {
     // ...existing code...
-    var $version = '1.0.2';
+    var $version = '1.0.3';
     var $db_prefix = '';
     var $settings = array();
     var $slug_tags = 'tags';
@@ -230,18 +230,6 @@ class Wiki {
 			       $plugin_template = $this->plugin_dir . 'default-templates/psource_wiki.php';
 			       if ( file_exists($plugin_template) ) {
 				       remove_filter('the_content', array(&$this, 'theme'), 1);
-				       return $plugin_template;
-			       }
-		       }
-
-		       // Taxonomie-Archiv: Wiki-Kategorie
-		       if ( is_tax('psource_wiki_category') ) {
-			       $templates = array('taxonomy-psource_wiki_category.php');
-			       if ( $new_template = locate_template($templates) ) {
-				       return $new_template;
-			       }
-			       $plugin_template = $this->plugin_dir . 'default-templates/taxonomy-psource_wiki_category.php';
-			       if ( file_exists($plugin_template) ) {
 				       return $plugin_template;
 			       }
 		       }
@@ -1859,16 +1847,6 @@ add_filter('get_the_archive_title', function($title) {
 		}
 	}
 	return $title;
-});
-// Erzwinge das Plugin-Template für Wiki-Kategoriearchive
-add_filter('template_include', function($template) {
-	if (is_tax('psource_wiki_category')) {
-		$plugin_template = dirname(__FILE__) . '/default-templates/taxonomy-psource_wiki_category.php';
-		if (file_exists($plugin_template)) {
-			return $plugin_template;
-		}
-	}
-	return $template;
 });
 
 
