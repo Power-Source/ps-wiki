@@ -1,27 +1,12 @@
 <?php
 /*
 Plugin Name: PS Wiki
-Plugin URI: https://power-source.github.io/ps-wiki/
-Description: Ein simples aber mächtiges Wiki-Plugin für Deine ClassicPress Seite, inkl. Multisitesupport, Frontend-Editor, Rechtemanagment.
+Plugin URI: https://psource.eimen.net/wiki/ps-wiki-dokumentation/
+Description: Arbeitet gemeinsam an Inhalten, diskutiert, nutzt Crowdsourcing und erstellt bessere Inhalte – mit PS Wiki.
 Author: PSOURCE
 Version: 1.0.3
 Author URI: https://psource.eimen.net/
 Text Domain: ps-wiki
-*/
-
-/*
-Copyright 2019-2026 PSOURCE (https://psource.eimen.net/)
-Author - PSOURCE
-This program is free software; you can redistribute it and/or modify
-it under the terms of the GNU General Public License (Version 2 - GPLv2) as published by
-the Free Software Foundation.
-This program is distributed in the hope that it will be useful,
-but WITHOUT ANY WARRANTY; without even the implied warranty of
-MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-GNU General Public License for more details.
-You should have received a copy of the GNU General Public License
-along with this program; if not, write to the Free Software
-Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 */
 
 
