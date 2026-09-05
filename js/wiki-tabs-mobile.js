@@ -26,7 +26,12 @@
       select.appendChild(option);
     });
     select.addEventListener('change', function() {
-      window.location.href = this.value;
+      var selectedOption = this.options[this.selectedIndex];
+      var url = new URL(selectedOption.value, window.location.href);
+
+      if (url.origin === window.location.origin) {
+        window.location.href = url.href;
+      }
     });
     // Tabs ausblenden, Dropdown einfügen
     tabsContainer.style.display = 'none';
