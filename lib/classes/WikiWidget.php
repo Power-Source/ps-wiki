@@ -4,8 +4,10 @@ class WikiWidget extends WP_Widget {
 		function __construct() {
 			global $wiki;
 
+			$order_by = is_object( $wiki ) && method_exists( $wiki, 'get_setting' ) ? $wiki->get_setting( 'sub_wiki_order_by' ) : 'menu_order';
+			$order    = is_object( $wiki ) && method_exists( $wiki, 'get_setting' ) ? $wiki->get_setting( 'sub_wiki_order' ) : 'ASC';
 			$widget_ops = array( 'description' => __('Wiki-Seiten anzeigen', 'ps-wiki') );
-			$control_ops = array( 'title' => __('Wiki', 'ps-wiki'), 'hierarchical' => 'yes', 'order_by' => $wiki->get_setting('sub_wiki_order_by'), 'order' => $wiki->get_setting('sub_wiki_order'));
+			$control_ops = array( 'title' => __('Wiki', 'ps-wiki'), 'hierarchical' => 'yes', 'order_by' => $order_by, 'order' => $order );
 			//parent::WP_Widget( 'psource_wiki', __('Wiki', 'wiki'), $widget_ops, $control_ops );
 			parent::__construct( 'psource_wiki', __('Wiki', 'ps-wiki'), $widget_ops, $control_ops );
 		}
@@ -90,7 +92,9 @@ class WikiWidget extends WP_Widget {
 		global $wiki;
 
 		$instance = $old_instance;
-		$new_instance = wp_parse_args( (array) $new_instance, array( 'title' => __('Wiki', 'ps-wiki'), 'hierarchical' => 'yes', 'order_by' => $wiki->get_setting('sub_wiki_order_by'), 'order' => $wiki->get_setting('sub_wiki_order')) );
+			$order_by = is_object( $wiki ) && method_exists( $wiki, 'get_setting' ) ? $wiki->get_setting( 'sub_wiki_order_by' ) : 'menu_order';
+			$order    = is_object( $wiki ) && method_exists( $wiki, 'get_setting' ) ? $wiki->get_setting( 'sub_wiki_order' ) : 'ASC';
+			$new_instance = wp_parse_args( (array) $new_instance, array( 'title' => __('Wiki', 'ps-wiki'), 'hierarchical' => 'yes', 'order_by' => $order_by, 'order' => $order ) );
 		$instance['title'] = strip_tags($new_instance['title']);
 		$instance['hierarchical'] = $new_instance['hierarchical'];
 		$instance['order_by'] = $new_instance['order_by'];

@@ -1,10 +1,11 @@
 === PS Wiki ===
 Contributors: DerN3rd (PSOURCE)
 Tags: multisite, wiki, wikipedia
-Requires at least: 4.9
-WordPress: 7.0.4
-ClassicPress: 2.7.1
-Stable tag: 1.0.3
+Requires at least: 5.0
+Requires CP: 1.4
+Tested up to: 7.1
+ClassicPress: 2.7.2
+Stable tag: 1.0.4
 Requires PHP: 8.0
 License: GPLv2 or later
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
@@ -96,11 +97,13 @@ Mit PS Wiki entscheidest Du selbst, wie Deine Community Inhalte erstellt, organi
 
 == ChangeLog ==
 
+= 1.0.4 =
+* Aktualisierte Widget-Klasse zur Verbesserung der Einstellungen für Unter-Wikis
+
 = 1.0.3 =
 * Archivansicht angepasst
 
 = 1.0.2 =
-
 * Fix: PHP 8 TypeError in Wiki->theme() bei TOC-Verarbeitung behoben
 * Fix: TOC-Generierung liefert konsistent toc und content (inkl. Empty-Case)
 * Fix: TOC-Shortcode gegen ungültige Rückgabewerte abgesichert
@@ -113,13 +116,11 @@ Mit PS Wiki entscheidest Du selbst, wie Deine Community Inhalte erstellt, organi
 * Change: Loader in wiki.php auf premium/wiki-features.php aktualisiert
 
 = 1.0.1 =
-
 * Add: Autolink Funktion
 * Add Inhaltsverzeichnis
 * Add List/Grid Archive
 * Fix: Wiki Sortierung
 
 = 1.0.0 =
-
 * Release
 

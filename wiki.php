@@ -4,7 +4,7 @@ Plugin Name: PS Wiki
 Plugin URI: https://psource.eimen.net/wiki/ps-wiki-dokumentation/
 Description: Arbeitet gemeinsam an Inhalten, diskutiert, nutzt Crowdsourcing und erstellt bessere Inhalte – mit PS Wiki.
 Author: PSOURCE
-Version: 1.0.3
+Version: 1.0.4
 Author URI: https://psource.eimen.net/
 Text Domain: ps-wiki
 */
@@ -14,7 +14,7 @@ require_once dirname(__FILE__) . '/lib/classes/WikiNotifications.php';
 
 class Wiki {
     // ...existing code...
-    var $version = '1.0.3';
+    var $version = '1.0.4';
     var $db_prefix = '';
     var $settings = array();
     var $slug_tags = 'tags';
