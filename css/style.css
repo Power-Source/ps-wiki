@@ -239,3 +239,450 @@ input.psource_wiki_title {
 td.diff-context {
     width: 49%;
 }
+
+/* Frontend revision history and comparison. */
+.psource-wiki-revision-view,
+.psource-wiki-revision-view * {
+	box-sizing: border-box;
+}
+
+.psource-wiki-revision-view {
+	--wiki-revision-border: #d8dee4;
+	--wiki-revision-muted: #59636e;
+	--wiki-revision-surface: #f6f8fa;
+	--wiki-revision-accent: #7b287d;
+	margin: 24px 0;
+	color: #24292f;
+}
+
+.psource-wiki-revision-header {
+	margin-bottom: 20px;
+}
+
+.psource-wiki-revision-header h2 {
+	margin: 0;
+	font-size: clamp(1.35rem, 3vw, 1.8rem);
+	line-height: 1.3;
+	overflow-wrap: anywhere;
+}
+
+.psource-wiki-revision-meta {
+	display: grid;
+	grid-template-columns: repeat(2, minmax(0, 1fr));
+	gap: 1px;
+	margin-bottom: 16px;
+	border: 1px solid var(--wiki-revision-border);
+	border-radius: 6px;
+	background: var(--wiki-revision-border);
+	overflow: hidden;
+}
+
+.psource-wiki-revision-meta.is-single {
+	grid-template-columns: minmax(0, 1fr);
+}
+
+.psource-wiki-revision-author {
+	display: flex;
+	align-items: center;
+	gap: 10px;
+	min-width: 0;
+	padding: 10px 12px;
+	background: #fff;
+}
+
+.psource-wiki-revision-author .avatar {
+	width: 36px;
+	height: 36px;
+	margin: 0;
+	border-radius: 50%;
+}
+
+.psource-wiki-revision-author-copy {
+	display: grid;
+	min-width: 0;
+	line-height: 1.3;
+}
+
+.psource-wiki-revision-author-copy strong,
+.psource-wiki-revision-author-copy > span:last-child {
+	overflow: hidden;
+	text-overflow: ellipsis;
+	white-space: nowrap;
+}
+
+.psource-wiki-revision-author-label {
+	color: var(--wiki-revision-muted);
+	font-size: 0.72rem;
+	font-weight: 700;
+	text-transform: uppercase;
+}
+
+.psource-wiki-revision-author-copy > span:last-child {
+	color: var(--wiki-revision-muted);
+	font-size: 0.82rem;
+}
+
+.psource-wiki-revision-view.is-loading .psource-wiki-revision-header,
+.psource-wiki-revision-view.is-loading .psource-wiki-revision-meta,
+.psource-wiki-revision-view.is-loading .psource-wiki-revision-fields {
+	opacity: 0.45;
+}
+
+.psource-wiki-revision-fields,
+.psource-wiki-revisions-table-wrap {
+	width: 100%;
+	overflow-x: auto;
+}
+
+.psource-wiki-revision-fields .form-table,
+.psource-wiki-revisions .post-revisions {
+	width: 100%;
+	margin: 0;
+	border: 1px solid var(--wiki-revision-border);
+	border-collapse: separate;
+	border-spacing: 0;
+	background: #fff;
+	table-layout: auto;
+}
+
+.psource-wiki-revision-fields .form-table {
+	table-layout: fixed;
+}
+
+.psource-wiki-revision-label-column {
+	width: 9rem;
+}
+
+.psource-wiki-revision-fields .form-table th,
+.psource-wiki-revision-fields .form-table td,
+.psource-wiki-revisions .post-revisions th,
+.psource-wiki-revisions .post-revisions td {
+	width: auto;
+	padding: 12px 14px;
+	border: 0;
+	border-bottom: 1px solid var(--wiki-revision-border);
+	font-size: 0.95rem;
+	line-height: 1.45;
+	text-align: left;
+	vertical-align: top;
+}
+
+.psource-wiki-revision-fields .form-table > tbody > tr > th:first-child {
+	width: 9rem;
+	min-width: 9rem;
+	background: var(--wiki-revision-surface);
+	font-weight: 600;
+}
+
+.psource-wiki-revision-fields .form-table tr:last-child > *,
+.psource-wiki-revisions .post-revisions tbody tr:last-child > * {
+	border-bottom: 0;
+}
+
+.psource-wiki-revision-fields .pre {
+	max-width: 100%;
+	margin: 0;
+	white-space: pre-wrap;
+	overflow-wrap: anywhere;
+}
+
+.psource-wiki-revision-compare-head .th-full > span {
+	display: inline-block;
+	width: 49%;
+	color: var(--wiki-revision-muted);
+}
+
+.psource-wiki-revision-new {
+	text-align: right;
+}
+
+.psource-wiki-revision-fields table.diff {
+	width: 100%;
+	table-layout: fixed;
+}
+
+.psource-wiki-revision-fields table.diff td {
+	width: 50%;
+	padding: 8px 10px;
+	overflow-wrap: anywhere;
+}
+
+.psource-wiki-revision-fields .diff-deletedline {
+	background: #fff0f0;
+}
+
+.psource-wiki-revision-fields .diff-addedline {
+	background: #edfff2;
+}
+
+.psource-wiki-revisions {
+	margin-top: 28px;
+}
+
+.psource-wiki-revisions-toolbar {
+	display: flex;
+	align-items: center;
+	gap: 16px;
+	justify-content: space-between;
+	margin-bottom: 14px;
+}
+
+.psource-wiki-revisions-toolbar h3 {
+	margin: 0;
+	font-size: 1.2rem;
+	line-height: 1.3;
+}
+
+.psource-wiki-revisions-controls {
+	display: flex;
+	align-items: center;
+	gap: 14px;
+}
+
+.psource-wiki-revisions-status {
+	margin: 0;
+	color: var(--wiki-revision-muted);
+	font-size: 0.86rem;
+}
+
+.psource-wiki-revisions-table-wrap {
+	border-radius: 6px;
+	box-shadow: 0 1px 2px rgba(27, 31, 36, 0.06);
+	overflow: hidden;
+}
+
+.psource-wiki-revisions .post-revisions {
+	border-radius: 6px;
+}
+
+.psource-wiki-revisions .post-revisions thead th {
+	padding-top: 11px;
+	padding-bottom: 11px;
+	color: var(--wiki-revision-muted);
+	font-size: 0.78rem;
+	font-weight: 700;
+	text-transform: uppercase;
+}
+
+.psource-wiki-revisions .post-revisions tbody tr {
+	transition: background-color 120ms ease;
+}
+
+.psource-wiki-revisions .revision-date {
+	font-weight: 600;
+}
+
+.psource-wiki-revisions .revision-author {
+	color: var(--wiki-revision-muted);
+}
+
+.psource-wiki-revisions .action-links {
+	text-align: right;
+}
+
+.psource-wiki-revisions .psource-wiki-restore-link {
+	display: inline-block;
+	padding: 6px 10px;
+	border: 1px solid var(--wiki-revision-border);
+	border-radius: 4px;
+	background: #fff;
+	color: var(--wiki-revision-accent);
+	line-height: 1.2;
+	text-decoration: none;
+}
+
+.psource-wiki-revisions .psource-wiki-restore-link:hover,
+.psource-wiki-revisions .psource-wiki-restore-link:focus-visible {
+	border-color: var(--wiki-revision-accent);
+	background: #fbf5fb;
+	text-decoration: none;
+}
+
+.psource-wiki-revisions-toolbar .button-secondary {
+	min-height: 40px;
+	padding: 8px 16px;
+	border: 1px solid var(--wiki-revision-accent);
+	border-radius: 4px;
+	background: var(--wiki-revision-accent);
+	color: #fff;
+	font: inherit;
+	font-weight: 600;
+	cursor: pointer;
+}
+
+.psource-wiki-revisions-toolbar .button-secondary:disabled {
+	border-color: #b8c0c8;
+	background: #b8c0c8;
+	cursor: not-allowed;
+	opacity: 0.75;
+}
+
+.psource-wiki-revisions .post-revisions thead {
+	background: var(--wiki-revision-surface);
+}
+
+.psource-wiki-revisions .post-revisions th:nth-child(1),
+.psource-wiki-revisions .post-revisions th:nth-child(2),
+.psource-wiki-revisions .revision-selector {
+	width: 64px;
+	text-align: center;
+}
+
+.psource-wiki-revisions .post-revisions tbody tr:hover {
+	background: #fafbfc;
+}
+
+.psource-wiki-revisions .post-revisions tbody tr.is-revision-from {
+	background: #fff8ef;
+}
+
+.psource-wiki-revisions .post-revisions tbody tr.is-revision-to {
+	background: #f0faf5;
+}
+
+.psource-wiki-revisions .revision-selector input {
+	width: 18px;
+	height: 18px;
+	margin: 2px 0 0;
+	accent-color: var(--wiki-revision-accent);
+}
+
+.psource-wiki-restore-link {
+	font-weight: 600;
+	white-space: nowrap;
+}
+
+@media (max-width: 700px) {
+	.psource-wiki-revision-view {
+		margin-top: 18px;
+	}
+
+	.psource-wiki-revision-meta {
+		grid-template-columns: minmax(0, 1fr);
+	}
+
+	.psource-wiki-revision-fields .form-table,
+	.psource-wiki-revision-fields .form-table tbody,
+	.psource-wiki-revision-fields .form-table tr,
+	.psource-wiki-revision-fields .form-table th,
+	.psource-wiki-revision-fields .form-table td {
+		display: block;
+		width: 100%;
+		min-width: 0;
+	}
+
+	.psource-wiki-revision-fields .form-table tr {
+		border-bottom: 1px solid var(--wiki-revision-border);
+	}
+
+	.psource-wiki-revision-fields .form-table th,
+	.psource-wiki-revision-fields .form-table td {
+		border-bottom: 0;
+	}
+
+	.psource-wiki-revision-fields .form-table > tbody > tr > th:first-child {
+		width: 100%;
+	}
+
+	.psource-wiki-revision-fields table.diff,
+	.psource-wiki-revision-fields table.diff tbody,
+	.psource-wiki-revision-fields table.diff tr,
+	.psource-wiki-revision-fields table.diff td {
+		display: block;
+		width: 100%;
+	}
+
+	.psource-wiki-revision-fields table.diff td {
+		min-height: 0;
+		margin-bottom: 6px;
+	}
+
+	.psource-wiki-revision-compare-head th:first-child {
+		display: none;
+	}
+
+	.psource-wiki-revision-compare-head .th-full > span {
+		display: block;
+		width: 100%;
+		text-align: left;
+	}
+
+	.psource-wiki-revision-new {
+		margin-top: 6px;
+	}
+
+	.psource-wiki-revisions-toolbar .button-secondary {
+		width: 100%;
+	}
+
+	.psource-wiki-revisions-toolbar {
+		align-items: stretch;
+		flex-direction: column;
+	}
+
+	.psource-wiki-revisions-controls {
+		align-items: stretch;
+		flex-direction: column;
+		gap: 8px;
+	}
+
+	.psource-wiki-revisions-table-wrap {
+		border: 0;
+		border-radius: 0;
+		box-shadow: none;
+		overflow: visible;
+	}
+
+	.psource-wiki-revisions .post-revisions,
+	.psource-wiki-revisions .post-revisions tbody,
+	.psource-wiki-revisions .post-revisions tr,
+	.psource-wiki-revisions .post-revisions td {
+		display: block;
+		width: 100%;
+	}
+
+	.psource-wiki-revisions .post-revisions thead {
+		position: absolute;
+		width: 1px;
+		height: 1px;
+		overflow: hidden;
+		clip: rect(0 0 0 0);
+		white-space: nowrap;
+	}
+
+	.psource-wiki-revisions .post-revisions tr {
+		display: grid;
+		grid-template-columns: 1fr 1fr;
+		margin-bottom: 10px;
+		padding: 12px 14px;
+		border: 1px solid var(--wiki-revision-border);
+		border-radius: 6px;
+		background: #fff;
+	}
+
+	.psource-wiki-revisions .post-revisions td {
+		padding: 7px 0;
+		border: 0;
+	}
+
+	.psource-wiki-revisions .post-revisions td::before {
+		display: block;
+		margin-bottom: 2px;
+		color: var(--wiki-revision-muted);
+		content: attr(data-label);
+		font-size: 0.75rem;
+		font-weight: 600;
+		text-transform: uppercase;
+	}
+
+	.psource-wiki-revisions .post-revisions .revision-selector {
+		grid-row: 1;
+		text-align: left;
+	}
+
+	.psource-wiki-revisions .post-revisions td:nth-child(3),
+	.psource-wiki-revisions .post-revisions td:nth-child(4),
+	.psource-wiki-revisions .post-revisions .action-links {
+		grid-column: 1 / -1;
+	}
+}

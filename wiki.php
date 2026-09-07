@@ -4,7 +4,7 @@ Plugin Name: PS Wiki
 Plugin URI: https://psource.eimen.net/wiki/ps-wiki-dokumentation/
 Description: Arbeitet gemeinsam an Inhalten, diskutiert, nutzt Crowdsourcing und erstellt bessere Inhalte – mit PS Wiki.
 Author: PSOURCE
-Version: 1.0.4
+Version: 1.0.5
 Author URI: https://psource.eimen.net/
 Text Domain: ps-wiki
 */
@@ -14,7 +14,7 @@ require_once dirname(__FILE__) . '/lib/classes/WikiNotifications.php';
 
 class Wiki {
     // ...existing code...
-    var $version = '1.0.4';
+	var $version = '1.0.5';
     var $db_prefix = '';
     var $settings = array();
     var $slug_tags = 'tags';
@@ -83,7 +83,7 @@ class Wiki {
 		   add_action('pre_get_posts', array( &$this, 'pre_get_posts'));
 		   add_filter('request', array(&$this, 'request'));
 		   add_filter('body_class', array(&$this, 'body_class'), 10);
-		   add_action('wp_enqueue_scripts', array( &$this, 'wp_enqueue_scripts'), 10);
+		   add_action('wp_enqueue_scripts', array( &$this, 'wp_enqueue_scripts'), 0);
 		   // Mobile Tabs-Dropdown für kleine Bildschirme einbinden
 		   add_action('wp_enqueue_scripts', function() {
 			   if (is_singular('psource_wiki') || is_tax('psource_wiki_category')) {
@@ -724,16 +724,41 @@ class Wiki {
 					$revision_title = wp_post_revision_title( $revision, false );
 					$h2 = sprintf( __( 'Revision für &#8220;%1$s&#8221; erstellt am %2$s', 'wiki' ), $post_title, $revision_title );
 				}
-				$new_content .= '<h3 class="long-header">'.$h2.'</h3>';
+				$new_content .= '<section class="psource-wiki-revision-view">';
+				$new_content .= '<header class="psource-wiki-revision-header"><h2>'.$h2.'</h2></header>';
+				$revision_authors = array();
+				if ( 'diff' == $action ) {
+					$revision_authors[] = array( 'label' => __( 'Von', 'ps-wiki' ), 'revision' => $left_revision );
+					$revision_authors[] = array( 'label' => __( 'Bis', 'ps-wiki' ), 'revision' => $right_revision );
+				} elseif ( isset( $revision ) && $revision ) {
+					$revision_authors[] = array( 'label' => __( 'Bearbeitet von', 'ps-wiki' ), 'revision' => $revision );
+				}
+				if ( $revision_authors ) {
+					$meta_class = count( $revision_authors ) === 1 ? ' is-single' : '';
+					$new_content .= '<aside class="psource-wiki-revision-meta'.$meta_class.'" aria-label="'.esc_attr__( 'Bearbeiter der Revisionen', 'ps-wiki' ).'">';
+					foreach ( $revision_authors as $author_data ) {
+						$author_id = absint( $author_data['revision']->post_author );
+						$author_name = get_the_author_meta( 'display_name', $author_id );
+						$new_content .= '<div class="psource-wiki-revision-author">';
+						$new_content .= get_avatar( $author_id, 36 );
+						$new_content .= '<span class="psource-wiki-revision-author-copy">';
+						$new_content .= '<span class="psource-wiki-revision-author-label">'.esc_html( $author_data['label'] ).'</span>';
+						$new_content .= '<strong>'.esc_html( $author_name ).'</strong>';
+						$new_content .= '<span>'.esc_html( wp_post_revision_title( $author_data['revision'], false ) ).'</span>';
+						$new_content .= '</span></div>';
+					}
+					$new_content .= '</aside>';
+				}
+				$new_content .= '<div class="psource-wiki-revision-fields">';
 				$new_content .= '<table class="form-table ie-fixed">';
-				$new_content .= '<col class="th" />';
+				$new_content .= '<colgroup><col class="psource-wiki-revision-label-column" /><col /></colgroup>';
 
 				if ( 'diff' == $action ) :
-					$new_content .= '<tr id="revision">';
+					$new_content .= '<tr id="revision" class="psource-wiki-revision-compare-head">';
 					$new_content .= '<th scope="row"></th>';
 					$new_content .= '<th scope="col" class="th-full">';
-					$new_content .= '<span class="alignleft">'.sprintf( __('Älter: %s', 'wiki'), wp_post_revision_title( $left_revision, false ) ).'</span>';
-					$new_content .= '<span class="alignright">'.sprintf( __('Neuer: %s', 'wiki'), wp_post_revision_title( $right_revision, false ) ).'</span>';
+					$new_content .= '<span class="psource-wiki-revision-old">'.sprintf( __('Älter: %s', 'wiki'), wp_post_revision_title( $left_revision, false ) ).'</span>';
+					$new_content .= '<span class="psource-wiki-revision-new">'.sprintf( __('Neuer: %s', 'wiki'), wp_post_revision_title( $right_revision, false ) ).'</span>';
 					$new_content .= '</th>';
 					$new_content .= '</tr>';
 				endif;
@@ -752,7 +777,7 @@ class Wiki {
 						$rcontent = apply_filters( "_wp_post_revision_field_$field", $revision->$field, $field, $revision->ID );
 					}
 					$new_content .= '<tr id="revision-field-' . $field . '">';
-					$new_content .= '<th scope="row" style="width: auto; max-width: 45px;">'.esc_html( $field_title ).'</th>';
+					$new_content .= '<th scope="row">'.esc_html( $field_title ).'</th>';
 					$new_content .= '<td><div class="pre">'.$rcontent.'</div></td>';
 					$new_content .= '</tr>';
 				endforeach;
@@ -761,9 +786,9 @@ class Wiki {
 					$new_content .= '<tr><td colspan="2"><div class="updated"><p>'.__( 'Diese Revisionen sind identisch.', 'wiki' ). '</p></div></td></tr>';
 				endif;
 
-				$new_content .= '</table>';
-				$new_content .= '<br class="clear" />';
-				$new_content .= '<div class="psource_wiki_revisions">' . $this->list_post_revisions( $post, $args ) . '</div>';
+				$new_content .= '</table></div>';
+				$new_content .= '<div class="psource_wiki_revisions psource-wiki-revisions">' . $this->list_post_revisions( $post, $args ) . '</div>';
+				$new_content .= '</section>';
 				$redirect = false;
 				break;
 			default:
@@ -1346,15 +1371,15 @@ class Wiki {
 				$class = $class ? '' : " class='alternate'";
 
 				if ( $post->ID != $revision->ID && $can_edit_post && current_user_can( 'read_post', $revision->ID ) )
-					$actions = '<a href="' . wp_nonce_url( add_query_arg( array( 'revision' => $revision->ID, 'action' => 'restore' ) ), "restore-post_$post->ID|$revision->ID" ) . '">' . __( 'Wiederherstellen', 'ps-wiki' ) . '</a>';
+					$actions = '<a class="psource-wiki-restore-link" href="' . wp_nonce_url( add_query_arg( array( 'revision' => $revision->ID, 'action' => 'restore' ) ), "restore-post_$post->ID|$revision->ID" ) . '">' . __( 'Wiederherstellen', 'ps-wiki' ) . '</a>';
 				else
 					$actions = ' ';
-				$rows .= "<tr$class>\n";
-				$rows .= "\t<td style='white-space: nowrap' scope='row'><input type='radio' name='left' value='{$revision->ID}' {$left_checked} /></td>\n";
-				$rows .= "\t<td style='white-space: nowrap' scope='row'><input type='radio' name='right' value='{$revision->ID}' {$right_checked} /></td>\n";
-				$rows .= "\t<td>$date</td>\n";
-				$rows .= "\t<td>$name</td>\n";
-				$rows .= "\t<td class='action-links'>$actions</td>\n";
+				$rows .= "<tr$class data-revision-id='" . absint( $revision->ID ) . "'>\n";
+				$rows .= "\t<td class='revision-selector' data-label='" . esc_attr_x( 'Von', 'revisions column name', 'ps-wiki' ) . "'><input type='radio' name='left' value='{$revision->ID}' {$left_checked} aria-label='" . esc_attr( sprintf( __( '%s als ältere Revision wählen', 'ps-wiki' ), $date ) ) . "' /></td>\n";
+				$rows .= "\t<td class='revision-selector' data-label='" . esc_attr_x( 'Bis', 'revisions column name', 'ps-wiki' ) . "'><input type='radio' name='right' value='{$revision->ID}' {$right_checked} aria-label='" . esc_attr( sprintf( __( '%s als neuere Revision wählen', 'ps-wiki' ), $date ) ) . "' /></td>\n";
+				$rows .= "\t<td class='revision-date' data-label='" . esc_attr_x( 'Datum erstellt', 'revisions column name', 'ps-wiki' ) . "'>$date</td>\n";
+				$rows .= "\t<td class='revision-author' data-label='" . esc_attr__( 'Autor', 'ps-wiki' ) . "'>" . esc_html( $name ) . "</td>\n";
+				$rows .= "\t<td class='action-links' data-label='" . esc_attr__( 'Aktionen', 'ps-wiki' ) . "'>$actions</td>\n";
 				$rows .= "</tr>\n";
 			} else {
 				$title = sprintf( $titlef, $date, $name );
@@ -1363,21 +1388,22 @@ class Wiki {
 		}
 
 		if ( 'form-table' == $format ) :
-			$content .= '<form action="'.get_permalink().'" method="get">';
-			$content .= '<div class="tablenav">';
-			$content .= '<div class="alignleft">';
+			$content .= '<form class="psource-wiki-revisions-form" action="'.esc_url( get_permalink() ).'" method="get">';
+			$content .= '<div class="psource-wiki-revisions-toolbar">';
+			$content .= '<h3>'.esc_html__( 'Revisionen', 'ps-wiki' ).'</h3>';
+			$content .= '<div class="psource-wiki-revisions-controls">';
+			$content .= '<p class="psource-wiki-revisions-status" aria-live="polite"></p>';
 			$content .= '<input type="submit" class="button-secondary" value="'.esc_attr( __('Revisionen vergleichen', 'ps-wiki' ) ).'" />';
+			$content .= '</div>';
 			$content .= '<input type="hidden" name="action" value="diff" />';
 			$content .= '<input type="hidden" name="post_type" value="'.esc_attr($post->post_type).'" />';
 			$content .= '</div>';
-			$content .= '</div>';
-			$content .= '<br class="clear" />';
+			$content .= '<div class="psource-wiki-revisions-table-wrap">';
 			$content .= '<table class="widefat post-revisions" cellspacing="0" id="post-revisions">';
-			$content .= '<col style="width: 45px" /><col style="width: 45px" /><col style="width: 33%" /><col style="width: 33%" /><col style="width: 33%" />';
 			$content .= '<thead>';
 			$content .= '<tr>';
-			$content .= '<th scope="col">'._x( 'Alt', 'revisions column name', 'ps-wiki' ).'</th>';
-			$content .= '<th scope="col">'._x( 'Neu', 'revisions column name', 'ps-wiki' ).'</th>';
+			$content .= '<th scope="col">'._x( 'Von', 'revisions column name', 'ps-wiki' ).'</th>';
+			$content .= '<th scope="col">'._x( 'Bis', 'revisions column name', 'ps-wiki' ).'</th>';
 			$content .= '<th scope="col">'._x( 'Datum erstellt', 'revisions column name', 'ps-wiki' ).'</th>';
 			$content .= '<th scope="col">'.__( 'Autor', 'wiki', 'ps-wiki' ).'</th>';
 			$content .= '<th scope="col" class="action-links">'.__( 'Aktionen', 'ps-wiki' ).'</th>';
@@ -1387,6 +1413,7 @@ class Wiki {
 			$content .= $rows;
 			$content .= '</tbody>';
 			$content .= '</table>';
+			$content .= '</div>';
 			$content .= '</form>';
 		else :
 			$content .= "<ul class='post-revisions'>\n";
@@ -1725,14 +1752,18 @@ class Wiki {
 	}
 
 	function wp_enqueue_scripts() {
-		if ( get_query_var('post_type') != 'psource_wiki' ) { return; }
+		if ( !is_singular('psource_wiki') && !is_post_type_archive('psource_wiki') && !is_tax('psource_wiki_category') ) { return; }
 		wp_enqueue_script('utils');
 		wp_enqueue_script('jquery');
+		wp_scripts()->add_data('jquery', 'group', 0);
 		wp_enqueue_script('psource_wiki-js', $this->plugin_url . 'js/wiki.js', array('jquery'), $this->version);
 		wp_enqueue_style('psource_wiki-css', $this->plugin_url . 'css/style.css', null, $this->version);
 		wp_enqueue_style('psource_wiki-print-css', $this->plugin_url . 'css/print.css', null, $this->version, 'print');
 		wp_localize_script('psource_wiki-js', 'Wiki', array(
 			'restoreMessage' => __('Bist Du sicher, dass Sie diese Version wiederherstellen möchtest?', 'ps-wiki'),
+			'comparePrompt' => __('Wähle zwei unterschiedliche Revisionen aus.', 'ps-wiki'),
+			'compareSelection' => __('Vergleich: %1$s bis %2$s', 'ps-wiki'),
+			'compareLoading' => __('Vergleich wird geladen …', 'ps-wiki'),
 		));
 	}
 

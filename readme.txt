@@ -5,7 +5,7 @@ Requires at least: 5.0
 Requires CP: 1.4
 Tested up to: 7.1
 ClassicPress: 2.7.2
-Stable tag: 1.0.4
+Stable tag: 1.0.5
 Requires PHP: 8.0
 License: GPLv2 or later
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
@@ -97,8 +97,27 @@ Mit PS Wiki entscheidest Du selbst, wie Deine Community Inhalte erstellt, organi
 
 == ChangeLog ==
 
+= 1.0.5 =
+* Change: Revisionsansicht im Frontend vollständig modernisiert und visuell überarbeitet
+* Change: Responsive Tabellen- und Kartenansicht für Desktop, Tablet und Mobilgeräte ergänzt
+* Change: Revisionsauswahl als verständlichen Von-bis-Workflow neu gestaltet
+* Change: Zwei passende Revisionen werden automatisch vorausgewählt
+* Change: Chronologisch ungültige oder identische Vergleichsauswahlen werden verhindert
+* Change: Ausgewählte Ausgangs- und Zielrevisionen werden farblich hervorgehoben
+* Change: Live-Status für den aktuell gewählten Vergleichszeitraum ergänzt
+* Add: Revisionsvergleiche werden ohne vollständigen Seitenreload inline per AJAX geladen
+* Add: Browser-Zurück und Browser-Vorwärts für inline geladene Revisionsvergleiche unterstützt
+* Add: Bearbeiter-Metabox mit Avatar, Benutzername und Revisionszeit für Von- und Bis-Revision ergänzt
+* Change: Diff-Darstellung nutzt den verfügbaren Inhaltsbereich und entfernt die übergroße leere Spalte
+* Change: Diff-Inhalte werden auf Mobilgeräten lesbar untereinander statt in schmalen Halbspalten dargestellt
+* Change: Wiederherstellen-Aktionen als moderne, klar erkennbare Buttons gestaltet
+* Change: Lade-, Fokus- und ARIA-Zustände der Revisionsansicht für eine bessere Zugänglichkeit ergänzt
+* Fix: Globale Theme-Tabellenstile überschreiben die Revisionsansicht nicht mehr
+* Fix: Horizontalen Überlauf der Revisionsansicht auf kleinen Bildschirmen behoben
+
 = 1.0.4 =
 * Aktualisierte Widget-Klasse zur Verbesserung der Einstellungen für Unter-Wikis
+* Security Fix
 
 = 1.0.3 =
 * Archivansicht angepasst
